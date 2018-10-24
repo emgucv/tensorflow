@@ -38,6 +38,7 @@
 #include "tensorflow/contrib/lite/kernels/register.h"
 #include "tensorflow/contrib/lite/model.h"
 #include "tensorflow/contrib/lite/string_util.h"
+#include "tensorflow/core/public/version.h"
 //#include "tensorflow/contrib/lite/tools/mutable_op_resolver.h"
 
 TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromFile(char* filename);
@@ -65,6 +66,8 @@ TFAPI(const char*) tfeInterpreterGetInputName(tflite::Interpreter* interpreter, 
 TFAPI(int) tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter);
 TFAPI(void) tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output);
 TFAPI(const char*) tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int index);
+TFAPI(void) tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable);
+TFAPI(void) tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter, int numThreads);
 TFAPI(void) tfeInterpreterRelease(tflite::Interpreter** interpreter);
 
 TFAPI(tflite::InterpreterBuilder*) tfeInterpreterBuilderCreate(tflite::FlatBufferModel* model, tflite::OpResolver* opResolver);
@@ -77,7 +80,8 @@ TFAPI(void) tfeTensorGetQuantizationParams(TfLiteTensor* tensor, TfLiteQuantizat
 TFAPI(int) tfeTensorGetAllocationType(TfLiteTensor* tensor);
 TFAPI(int) tfeTensorGetByteSize(TfLiteTensor* tensor);
 TFAPI(const char*) tfeTensorGetName(TfLiteTensor* tensor);
-
+TFAPI(TfLiteIntArray*) tfeTensorGetDims(TfLiteTensor* tensor);
+TFAPI(bool) tfeTensorIsVariable(TfLiteTensor* tensor);
 TFAPI(void) tfeMemcpy(void* dst, void* src, int length);
 
 TFAPI(tflite::DynamicBuffer*) tfeDynamicBufferCreate();
@@ -85,10 +89,16 @@ TFAPI(void) tfeDynamicBufferRelease(tflite::DynamicBuffer** buffer);
 TFAPI(void) tfeDynamicBufferAddString(tflite::DynamicBuffer* buffer, char* str, int len);
 TFAPI(void) tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer, TfLiteTensor* tensor);
 
+
+TFAPI(TfLiteIntArray*) tfeIntArrayCreate(int size);
+TFAPI(int) tfeIntArrayGetSize(TfLiteIntArray* v);
+TFAPI(int*) tfeIntArrayGetData(TfLiteIntArray* v);
+TFAPI(void) tfeIntArrayRelease(TfLiteIntArray** v);
+
 //TFAPI(tflite::MutableOpResolver*) tfeMutableOpResolverCreate(tflite::OpResolver** opResolver); 
 //TFAPI(void) tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver);
 
-//TFAPI(const char*) tfeGetVersion();
+TFAPI(const char*) tfeGetLiteVersion();
 
 namespace tflite
 {

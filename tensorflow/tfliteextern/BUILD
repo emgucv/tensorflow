@@ -15,6 +15,7 @@ cc_binary(
     srcs = ["tfliteextern.cc",
         "tfliteextern.h"
     ],
+
    copts = tflite_copts() + [ 
         "-ffunction-sections",
         "-fdata-sections",
@@ -48,6 +49,7 @@ cc_binary(
 	    "//tensorflow/contrib/lite:string_util",
 	    "//tensorflow/contrib/lite:schema_fbs_version",
 	    "//tensorflow/contrib/lite/kernels:builtin_ops",
+		"//tensorflow/core:version_lib",
 	    #"//tensorflow/contrib/lite/tools:mutable_op_resolver"
 	    #"//tensorflow/c:c_api",
         #"//tensorflow/cc:cc_ops",

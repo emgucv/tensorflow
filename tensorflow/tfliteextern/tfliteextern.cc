@@ -114,6 +114,16 @@ const char* tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int in
   return interpreter->GetOutputName(index);
 }
 
+void tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable)
+{
+	interpreter->UseNNAPI(enable);
+}
+void tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter, int numThreads)
+{
+	interpreter->SetNumThreads(numThreads);
+}
+
+
 void tfeInterpreterRelease(tflite::Interpreter** interpreter)
 {
   delete * interpreter;
@@ -124,6 +134,7 @@ tflite::InterpreterBuilder* tfeInterpreterBuilderCreate(tflite::FlatBufferModel*
 {
   return new tflite::InterpreterBuilder(*model, *opResolver);
 }
+
 void tfeInterpreterBuilderRelease(tflite::InterpreterBuilder** builder)
 {
   delete * builder;
@@ -164,6 +175,14 @@ const char* tfeTensorGetName(TfLiteTensor* tensor)
 {
   return tensor->name;
 }
+TfLiteIntArray* tfeTensorGetDims(TfLiteTensor* tensor)
+{
+	return tensor->dims;
+}
+bool tfeTensorIsVariable(TfLiteTensor* tensor)
+{
+	return tensor->is_variable;
+}
 
 
 void tfeMemcpy(void* dst, void* src, int length)
@@ -189,6 +208,24 @@ void tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer, TfLiteTensor* 
   buffer->WriteToTensor(tensor);
 }
 
+TfLiteIntArray* tfeIntArrayCreate(int size)
+{
+	return TfLiteIntArrayCreate(size);
+}
+int tfeIntArrayGetSize(TfLiteIntArray* v)
+{
+	return v->size;
+}
+int* tfeIntArrayGetData(TfLiteIntArray* v)
+{
+	return v->data;
+}
+void tfeIntArrayRelease(TfLiteIntArray** v)
+{
+	TfLiteIntArrayFree(*v);
+	*v = 0;
+}
+
 //void RegisterSelectedOps(tflite::MutableOpResolver* resolver);
 
 /*
@@ -204,13 +241,15 @@ void tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver)
 {
   delete *resolver;
   *resolver = 0;
+}*/
+
+static const char* tflite_version = TF_VERSION_STRING;
+
+const char* tfeGetLiteVersion()
+{
+  return tflite_version;
 }
 
-const char* tfeGetVersion()
-{
-  return TF_Version();
-}
-*/
 
 static tflite::ErrorCallback customErrorCallback = 0;
 
