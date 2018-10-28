@@ -104,10 +104,11 @@ int tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter)
 {
   return interpreter->outputs().size();
 }
-void tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output)
+int tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output)
 {
   std::vector<int> ovec = interpreter->outputs();
-  memcpy(output, &ovec[0], ovec.size());
+  memcpy(output, &ovec[0], ovec.size() * sizeof(int));
+  return ovec.size();
 }
 const char* tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int index)
 {
