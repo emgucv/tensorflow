@@ -98,7 +98,8 @@ $(wildcard tensorflow/contrib/lite/kernels/internal/*.c) \
 $(wildcard tensorflow/contrib/lite/kernels/internal/optimized/*.c) \
 $(wildcard tensorflow/contrib/lite/kernels/internal/reference/*.c) \
 $(wildcard tensorflow/contrib/lite/tools/make/downloads/farmhash/src/farmhash.cc) \
-$(wildcard tensorflow/contrib/lite/tools/make/downloads/fft2d/fftsg.c)
+$(wildcard tensorflow/contrib/lite/tools/make/downloads/fft2d/fftsg.c) \
+$(wildcard tensorflow/tfliteextern/tfliteextern.cc)
 endif
 # Remove any duplicates.
 CORE_CC_ALL_SRCS := $(sort $(CORE_CC_ALL_SRCS))
@@ -113,6 +114,10 @@ ifeq ($(BUILD_TYPE),micro)
 CORE_CC_EXCLUDE_SRCS += \
 tensorflow/contrib/lite/mmap_allocation.cc \
 tensorflow/contrib/lite/nnapi_delegate.cc
+else
+CORE_CC_EXCLUDE_SRCS += \
+tensorflow/contrib/lite/mmap_allocation_disabled.cc \
+tensorflow/contrib/lite/nnapi_delegate_disabled.cc
 endif
 # Filter out all the excluded files.
 TF_LITE_CC_SRCS := $(filter-out $(CORE_CC_EXCLUDE_SRCS), $(CORE_CC_ALL_SRCS))
