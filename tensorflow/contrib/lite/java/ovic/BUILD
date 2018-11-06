@@ -122,7 +122,6 @@ java_library(
         "src/main/java/org/tensorflow/ovic/OvicDetector.java",
     ],
     javacopts = JAVACOPTS,
-    tags = ["no_oss"],
     deps = [
         "//tensorflow/contrib/lite/java:libtensorflowlite_jni.so",
         "//tensorflow/contrib/lite/java:tensorflowlite_java",
