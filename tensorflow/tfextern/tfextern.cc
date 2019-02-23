@@ -43,7 +43,7 @@ int tfeNumDims(TF_Tensor* tensor)
 }
 void tfeGetDim(TF_Tensor* tensor, int* dims, int numDims)
 {
-	for (int i = 0; i < numDims;i++)
+	for (int i = 0; i < numDims; i++)
 		dims[i] = TF_Dim(tensor, i);
 }
 
@@ -56,8 +56,9 @@ TF_Session* tfeNewSession(TF_Graph* graph, const TF_SessionOptions* opts, TF_Sta
 		TF_Session* session = TF_NewSession(graph, optsNew, status);
 		TF_DeleteSessionOptions(optsNew);
 		return session;
-	} else
-		return TF_NewSession(graph, opts, status);	
+	}
+	else
+		return TF_NewSession(graph, opts, status);
 }
 void tfeDeleteSession(TF_Session** session, TF_Status* status)
 {
@@ -116,7 +117,7 @@ void tfeSessionListDevices(TF_Session* session, char* nameBuffer, char* typeBuff
 		typeBuffer[typePosition] = '\n';
 		typePosition += 1;
 
-		*(memorySizeBuffer+i) = TF_DeviceListMemoryBytes(deviceList, i, status);
+		*(memorySizeBuffer + i) = TF_DeviceListMemoryBytes(deviceList, i, status);
 	}
 	nameBuffer[namePosition] = '\0';
 	typeBuffer[typePosition] = '\0';
@@ -157,7 +158,7 @@ void tfeCloseSession(TF_Session* session, TF_Status* status)
 }
 void tfeSetConfig(TF_SessionOptions* options, const void* proto, int proto_len, TF_Status* status)
 {
-  TF_SetConfig(options, proto, proto_len, status);
+	TF_SetConfig(options, proto, proto_len, status);
 }
 void tfeSetTarget(TF_SessionOptions* options, const char* target)
 {
@@ -277,6 +278,11 @@ TF_Buffer* tfeGraphVersions(TF_Graph* graph, TF_Status* status)
 	return output_version_def;
 }
 
+void tfeGraphGetOpDef(TF_Graph* graph, const char* opName, TF_Buffer* outputOpDef, TF_Status* status)
+{
+	TF_GraphGetOpDef(graph, opName, outputOpDef, status);
+}
+
 int tfeGraphNumFunctions(TF_Graph* g)
 {
 	return TF_GraphNumFunctions(g);
@@ -327,9 +333,9 @@ int tfeOperationOutputConsumers(TF_Operation* operOut, int outIdx, TF_Operation*
 	TF_Output outOp;
 	outOp.oper = operOut;
 	outOp.index = outIdx;
-	TF_Input* inputs = static_cast<TF_Input*>( malloc(sizeof(TF_Input) * maxConsumers) );
+	TF_Input* inputs = static_cast<TF_Input*>(malloc(sizeof(TF_Input) * maxConsumers));
 	int count = TF_OperationOutputConsumers(outOp, inputs, maxConsumers);
-	
+
 	for (int i = 0; i < maxConsumers; i++)
 	{
 		consumers[i] = inputs[i].oper;
@@ -366,6 +372,58 @@ TF_DataType tfeOperationInputType(TF_Operation* oper, int idx)
 	input.oper = oper;
 	input.index = idx;
 	return TF_OperationInputType(input);
+}
+
+void tfeOperationGetAttrMetadata(TF_Operation* oper, const char* attrName, TF_AttrMetadata* meta, TF_Status* status)
+{
+	TF_AttrMetadata m = TF_OperationGetAttrMetadata(oper, attrName, status);
+	memcpy(meta, &m, sizeof(TF_AttrMetadata));
+}
+
+TF_DataType tfeOperationGetAttrType(TF_Operation* oper, const char* attrName, TF_Status* status)
+{
+	TF_DataType t;
+	TF_OperationGetAttrType(oper, attrName, &t, status);
+	return t;
+}
+
+void tfeOperationGetAttrString(TF_Operation* oper, const char* attrName, void* value, int maxLength, TF_Status* status)
+{
+	TF_OperationGetAttrString(oper, attrName, value, maxLength, status);
+}
+
+bool tfeOperationGetAttrBool(TF_Operation* oper, const char* attrName, TF_Status* status)
+{
+	unsigned char value;
+	TF_OperationGetAttrBool(oper, attrName, &value, status);
+	return (value != 0);
+}
+
+void tfeOperationGetAttrShape(TF_Operation* oper, const char* attrName, int64_t* value, int numDims, TF_Status* status)
+{
+	TF_OperationGetAttrShape(oper, attrName, value, numDims, status);
+}
+
+void tfeOperationGetAttrTensorShapeProto(TF_Operation* oper, const char* attrName, TF_Buffer* value, TF_Status* status)
+{
+	TF_OperationGetAttrTensorShapeProto(oper, attrName, value, status);
+}
+
+void tfeOperationGetAttrValueProto(TF_Operation* oper, const char* attrName, TF_Buffer* outputAttrValue, TF_Status* status)
+{
+	TF_OperationGetAttrValueProto(oper, attrName, outputAttrValue, status);
+}
+
+TF_Tensor* tfeOperationGetAttrTensor(TF_Operation* oper, const char* attrName, TF_Status* status)
+{
+	TF_Tensor* ptr;
+	TF_OperationGetAttrTensor(oper, attrName, &ptr, status);
+	return ptr;
+}
+
+void tfeOperationGetAttrIntList(TF_Operation* oper, const char* attrName, int64_t* values, int maxValues, TF_Status* status)
+{
+	TF_OperationGetAttrIntList(oper, attrName, values, maxValues, status);
 }
 
 //Function
@@ -435,7 +493,7 @@ void tfeSetAttrShape(TF_OperationDescription* desc, const char* attr_name, const
 {
 	TF_SetAttrShape(desc, attr_name, dims, num_dims);
 }
-void tfeSetAttrShapeList(TF_OperationDescription* desc, const char* attr_name, const int64_t* const* dims, const int* num_dims,	int num_shapes)
+void tfeSetAttrShapeList(TF_OperationDescription* desc, const char* attr_name, const int64_t* const* dims, const int* num_dims, int num_shapes)
 {
 	TF_SetAttrShapeList(desc, attr_name, dims, num_dims, num_shapes);
 }
