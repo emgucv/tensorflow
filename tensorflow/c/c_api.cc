@@ -20,7 +20,7 @@ limitations under the License.
 #include <memory>
 #include <vector>
 
-#ifndef __ANDROID__
+#if !( defined( __ANDROID__) || defined(TARGET_OS_IPHONE) )
 #include "tensorflow/cc/framework/gradients.h"
 #include "tensorflow/cc/framework/ops.h"
 #include "tensorflow/cc/framework/scope_internal.h"
@@ -2413,6 +2413,11 @@ void TF_AddGradientsWithPrefix(TF_Graph* g, const char* prefix, TF_Output* y,
       "Adding gradients is not supported in Android. File a bug at "
       "https://github.com/tensorflow/tensorflow/issues if this feature is "
       "important to you");
+#elif TARGET_OS_IPHONE
+  status->status = tensorflow::errors::Unimplemented(
+      "Adding gradients is not supported in iOS. File a bug at "
+      "https://github.com/tensorflow/tensorflow/issues if this feature is "
+      "important to you");
 #else
   std::vector<tensorflow::Output> y_arg = OutputsFromTFOutputs(y, ny);
   std::vector<tensorflow::Output> x_arg = OutputsFromTFOutputs(x, nx);
@@ -2526,6 +2531,10 @@ TF_Session* TF_LoadSessionFromSavedModel(
       "Loading a SavedModel is not supported in Android. File a bug at "
       "https://github.com/tensorflow/tensorflow/issues if this feature is "
       "important to you");
+  return nullptr;
+#elif TARGET_OS_IPHONE
+  status->status = tensorflow::errors::Unimplemented(
+      "Loading a SavedModel is not supported in iOS.");	  
   return nullptr;
 #else
   mutex_lock l(graph->mu);

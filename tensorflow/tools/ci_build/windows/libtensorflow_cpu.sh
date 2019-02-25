@@ -42,6 +42,8 @@ run_configure_for_cpu_build
 # cannot be used on Windows since it relies on pkg_tar rules.
 # So we do something special here
 bazel --output_user_root=${TMPDIR} build -c opt --copt=/arch:AVX \
+  ${BUILD_OPTS} \
+  tensorflow/tfextern:libtfextern.so \
   tensorflow:libtensorflow.so \
   tensorflow/tools/lib_package:clicenses_generate \
   tensorflow/java:libtensorflow_jni.so \

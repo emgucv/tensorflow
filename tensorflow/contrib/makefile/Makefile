@@ -83,6 +83,7 @@ HOST_LDOPTS += -L/usr/local/lib
 
 HOST_INCLUDES := \
 -I. \
+-I$(MAKEFILE_DIR)/../../../tfliteextern/ \
 -I$(MAKEFILE_DIR)/../../../ \
 -I$(MAKEFILE_DIR)/downloads/ \
 -I$(MAKEFILE_DIR)/downloads/eigen \
@@ -569,7 +570,7 @@ ifeq ($(TARGET),IOS)
 		-arch i386 \
 		-mno-sse \
 		-fembed-bitcode \
-		-D__thread=thread_local \
+		-D__thread= \
 		-DUSE_GEMM_FOR_CONV \
 		-Wno-c++11-narrowing \
 		-DTF_LEAN_BINARY \
@@ -643,7 +644,9 @@ $(wildcard tensorflow/core/platform/*/*/*.cc) \
 $(wildcard tensorflow/core/util/*.cc) \
 $(wildcard tensorflow/core/util/*/*.cc) \
 $(wildcard tensorflow/contrib/makefile/downloads/double_conversion/double-conversion/*.cc) \
-tensorflow/core/util/version_info.cc
+tensorflow/core/util/version_info.cc \
+tensorflow/cc/framework/ops.cc \
+$(wildcard tensorflow/tfextern/*.cc) 
 # Remove duplicates (for version_info.cc)
 CORE_CC_ALL_SRCS := $(sort $(CORE_CC_ALL_SRCS))
 

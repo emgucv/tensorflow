@@ -616,3 +616,5 @@ endif()
 if(tensorflow_BUILD_CC_TESTS OR tensorflow_BUILD_PYTHON_TESTS)
   include(tf_tests.cmake)
 endif()
+
+include(tf_extern.cmake)

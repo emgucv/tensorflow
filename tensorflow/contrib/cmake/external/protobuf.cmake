@@ -63,6 +63,15 @@ else()
   set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/protoc)
 endif()
 
+#MESSAGE(STATUS "************************  CMAKE_GENERATOR: ${CMAKE_GENERATOR} ************************")
+#MESSAGE(STATUS "************************  CMAKE_GENERATOR_PLATFORM: ${CMAKE_GENERATOR_PLATFORM} ************************")
+#MESSAGE(STATUS "************************  CMAKE_GENERATOR_TOOLSET: ${CMAKE_GENERATOR_TOOLSET} ************************")
+SET(CODED_STREAM_PATH "${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/src/google/protobuf/io/coded_stream.h")
+IF(WIN32)
+	STRING(REGEX REPLACE "/" "\\\\" CODED_STREAM_PATH ${CODED_STREAM_PATH} )
+ENDIF()
+#MESSAGE(STATUS "************************  Patch command: sed -i 's/kDefaultTotalBytesLimit = 64/kDefaultTotalBytesLimit = 500/g' ${CODED_STREAM_PATH} ************************")
+
 ExternalProject_Add(protobuf
     PREFIX protobuf
     DEPENDS zlib
@@ -72,6 +81,8 @@ ExternalProject_Add(protobuf
     BUILD_IN_SOURCE 1
     BUILD_BYPRODUCTS ${PROTOBUF_PROTOC_EXECUTABLE} ${protobuf_STATIC_LIBRARIES}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf
+	PATCH_COMMAND 
+		COMMAND sed -i "s/kDefaultTotalBytesLimit = 64/kDefaultTotalBytesLimit = 500/g" ${CODED_STREAM_PATH}
     # SOURCE_SUBDIR cmake/ # Requires CMake 3.7, this will allow removal of CONFIGURE_COMMAND
     # CONFIGURE_COMMAND resets some settings made in CMAKE_CACHE_ARGS and the generator used
     CONFIGURE_COMMAND ${CMAKE_COMMAND} cmake/
@@ -81,6 +92,9 @@ ExternalProject_Add(protobuf
         -Dprotobuf_BUILD_TESTS:BOOL=OFF
         -DZLIB_ROOT=${ZLIB_INSTALL}
         ${PROTOBUF_ADDITIONAL_CMAKE_OPTIONS}
+	CMAKE_GENERATOR "${CMAKE_GENERATOR}"
+	CMAKE_GENERATOR_PLATFORM "${CMAKE_GENERATOR_PLATFORM}"
+	CMAKE_GENERATOR_TOOLSET "${CMAKE_GENERATOR_TOOLSET}"
     INSTALL_COMMAND ""
     CMAKE_CACHE_ARGS
         -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=${tensorflow_ENABLE_POSITION_INDEPENDENT_CODE}
@@ -89,4 +103,5 @@ ExternalProject_Add(protobuf
         -Dprotobuf_BUILD_TESTS:BOOL=OFF
         -Dprotobuf_MSVC_STATIC_RUNTIME:BOOL=OFF
         -DZLIB_ROOT:STRING=${ZLIB_INSTALL}
+
 )
