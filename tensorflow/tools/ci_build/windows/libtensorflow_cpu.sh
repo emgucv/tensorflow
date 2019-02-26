@@ -32,9 +32,10 @@ if [ ! -e "WORKSPACE" ]; then
 fi
 
 export TF_BAZEL_TARGETS="//tensorflow:libtensorflow.so"
+export TF_BAZEL_TARGETS="//tensorflow/tfextern:libtfextern.so"
 export TF_BAZEL_TARGETS="${TF_BAZEL_TARGETS} //tensorflow/tools/lib_package:clicenses_generate"
-export TF_BAZEL_TARGETS="${TF_BAZEL_TARGETS} //tensorflow/java:libtensorflow_jni.so"
-export TF_BAZEL_TARGETS="${TF_BAZEL_TARGETS} //tensorflow/tools/lib_package:jnilicenses_generate"
+#export TF_BAZEL_TARGETS="${TF_BAZEL_TARGETS} //tensorflow/java:libtensorflow_jni.so"
+#export TF_BAZEL_TARGETS="${TF_BAZEL_TARGETS} //tensorflow/tools/lib_package:jnilicenses_generate"
 
 run_configure_for_cpu_build
 
@@ -45,20 +46,20 @@ bazel --output_user_root=${TMPDIR} build -c opt --copt=/arch:AVX \
   ${BUILD_OPTS} \
   tensorflow/tfextern:libtfextern.so \
   tensorflow:libtensorflow.so \
-  tensorflow/tools/lib_package:clicenses_generate \
-  tensorflow/java:libtensorflow_jni.so \
-  tensorflow/tools/lib_package:jnilicenses_generate
+  tensorflow/tools/lib_package:clicenses_generate 
+#  tensorflow/java:libtensorflow_jni.so \
+#  tensorflow/tools/lib_package:jnilicenses_generate
 
 DIR=lib_package
 rm -rf ${DIR}
 mkdir -p ${DIR}
 
 # Zip up the .dll and the LICENSE for the JNI library.
-cp bazel-bin/tensorflow/java/libtensorflow_jni.so ${DIR}/tensorflow_jni.dll
-zip -j ${DIR}/libtensorflow_jni-cpu-windows-$(uname -m).zip \
-  ${DIR}/tensorflow_jni.dll \
-  bazel-genfiles/tensorflow/tools/lib_package/include/tensorflow/jni/LICENSE
-rm -f ${DIR}/tensorflow_jni.dll
+#cp bazel-bin/tensorflow/java/libtensorflow_jni.so ${DIR}/tensorflow_jni.dll
+#zip -j ${DIR}/libtensorflow_jni-cpu-windows-$(uname -m).zip \
+#  ${DIR}/tensorflow_jni.dll \
+#  bazel-genfiles/tensorflow/tools/lib_package/include/tensorflow/jni/LICENSE
+#rm -f ${DIR}/tensorflow_jni.dll
 
 # Zip up the .dll, LICENSE and include files for the C library.
 mkdir -p ${DIR}/include/tensorflow/c
