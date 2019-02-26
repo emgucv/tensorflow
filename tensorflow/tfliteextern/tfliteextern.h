@@ -35,9 +35,9 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "tensorflow/contrib/lite/kernels/register.h"
-#include "tensorflow/contrib/lite/model.h"
-#include "tensorflow/contrib/lite/string_util.h"
+#include "tensorflow/lite/kernels/register.h"
+#include "tensorflow/lite/model.h"
+#include "tensorflow/lite/string_util.h"
 #include "tensorflow/core/public/version.h"
 //#include "tensorflow/contrib/lite/tools/mutable_op_resolver.h"
 
