@@ -1,5 +1,5 @@
 rem %echo off
-
+pushd %~p0
 cd /d %~dp0
 
 if exist _build rd /s /q _build
@@ -26,13 +26,13 @@ SET SOURCE_VERSION_CC=%RETVAL%
 python %SOURCE_PYTHON_SCRIPT% --raw_generate %SOURCE_VERSION_CC% --source_dir %SOURCE_DIR% --git_tag_override=
 
 rem cmake ../ -G "Visual Studio 15 Win64" -DCMAKE_GENERATOR_TOOLSET=v141,host=x64 -DCMAKE_INSTALL_PREFIX:PATH=.\install
+popd
 
 EXIT /B
 
 :NORMALIZEPATH
   SET RETVAL=%~dpfn1
   EXIT /B
-
 
 
                                                                               
