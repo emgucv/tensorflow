@@ -1,6 +1,7 @@
 #include "tensorflow/c/c_api.h"
 #include "tensorflow/c/c_api_internal.h"
 #include "tensorflow/core/util/port.h"
+#include "tensorflow/core/framework/op_kernel.h"
 
 #ifndef  TFAPI_EXPORTS
 #define TFAPI_EXPORTS
@@ -189,4 +190,6 @@ TFAPI(void) tfeMemcpy(void* dst, void* src, int length);
 
 TFAPI(bool) tfeIsGoogleCudaEnabled();
 
-TFAPI(bool) tfeIsOperationSupported(char* operationName);
+TFAPI(bool) tfeOpHasKernel(char* operationName);
+
+TFAPI(bool) tfeOpIsRegistered(char* operationName);
