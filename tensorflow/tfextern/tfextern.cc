@@ -1,6 +1,5 @@
 #include "tfextern.h"
 
-
 const char* tfeGetVersion()
 {
 	return TF_Version();
@@ -596,4 +595,18 @@ void tfeMemcpy(void* dst, void* src, int length)
 bool tfeIsGoogleCudaEnabled()
 {
 	return tensorflow::IsGoogleCudaEnabled();
+}
+
+bool tfeIsOperationSupported(char* operationName)
+{
+	std::string s(operationName);
+	std::vector<tensorflow::OpDef> op_defs;
+	tensorflow::OpRegistry::Global()->GetRegisteredOps(&op_defs);
+	for (std::vector<tensorflow::OpDef>::iterator it = op_defs.begin(); it != op_defs.end(); ++it)
+	{
+		std::string opName = it->name();
+		if (opName.compare(s) == 0)
+			return true;
+	}
+	return false;
 }
