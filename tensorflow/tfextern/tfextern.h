@@ -188,3 +188,5 @@ TFAPI(TF_Buffer*) tfeGetAllOpList();
 TFAPI(void) tfeMemcpy(void* dst, void* src, int length);
 
 TFAPI(bool) tfeIsGoogleCudaEnabled();
+
+TFAPI(bool) tfeIsOperationSupported(char* operationName);
