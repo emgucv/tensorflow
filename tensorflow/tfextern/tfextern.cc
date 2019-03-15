@@ -597,15 +597,27 @@ bool tfeIsGoogleCudaEnabled()
 	return tensorflow::IsGoogleCudaEnabled();
 }
 
-bool tfeIsOperationSupported(char* operationName)
+bool tfeOpIsRegistered(char* operationName)
 {
 	std::string s(operationName);
 	std::vector<tensorflow::OpDef> op_defs;
 	tensorflow::OpRegistry::Global()->GetRegisteredOps(&op_defs);
 	for (std::vector<tensorflow::OpDef>::iterator it = op_defs.begin(); it != op_defs.end(); ++it)
 	{
-		std::string opName = it->name();
-		if (opName.compare(s) == 0)
+		if (it->name() == s)
+			return true;
+	}
+	return false;
+}
+
+bool tfeOpHasKernel(char* operationName)
+{
+	std::string op_name(operationName);
+	tensorflow::KernelList kl = tensorflow::GetAllRegisteredKernels();
+	for (int i = 0; i < kl.kernel_size(); ++i)
+	{
+		tensorflow::KernelDef kd = kl.kernel(i);
+		if (kd.op() == op_name)
 			return true;
 	}
 	return false;
