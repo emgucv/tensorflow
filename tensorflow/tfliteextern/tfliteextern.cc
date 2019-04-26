@@ -131,6 +131,12 @@ void tfeInterpreterRelease(tflite::Interpreter** interpreter)
   *interpreter = 0;
 }
 
+int tfeInterpreterModifyGraphWithDelegate(tflite::Interpreter* interpreter, TfLiteDelegate* delegate)
+{
+	return (int) interpreter->ModifyGraphWithDelegate(delegate);
+}
+	
+
 tflite::InterpreterBuilder* tfeInterpreterBuilderCreate(tflite::FlatBufferModel* model, tflite::OpResolver* opResolver)
 {
   return new tflite::InterpreterBuilder(*model, *opResolver);
@@ -225,6 +231,28 @@ void tfeIntArrayRelease(TfLiteIntArray** v)
 {
 	TfLiteIntArrayFree(*v);
 	*v = 0;
+}
+
+tflite::NNAPIDelegate* tfeNNAPIDelegateCreate()
+{
+	return new tflite::NNAPIDelegate();
+}
+void tfeNNAPIDelegateRelease(tflite::NNAPIDelegate** delegate)
+{
+	delete *delegate;
+	*delegate = 0;
+}
+bool tfeNNAPIDelegateIsSupported(tflite::NNAPIDelegate* delegate)
+{
+	return delegate->IsSupported();
+}
+TfLiteDelegate* tfeNNAPIDelegateGetDelegate()
+{
+#ifdef __ANDROID__
+	return tflite::NnApiDelegate();
+#else
+	return 0;
+#endif
 }
 
 //void RegisterSelectedOps(tflite::MutableOpResolver* resolver);

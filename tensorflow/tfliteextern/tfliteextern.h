@@ -39,7 +39,13 @@
 #include "tensorflow/lite/model.h"
 #include "tensorflow/lite/string_util.h"
 #include "tensorflow/core/public/version.h"
-//#include "tensorflow/contrib/lite/tools/mutable_op_resolver.h"
+
+//#ifdef __ANDROID__
+//#include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
+#include "tensorflow/lite/nnapi_delegate.h"
+//#endif
+
+//#include "tensorflow/lite/tools/mutable_op_resolver.h"
 
 TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromFile(char* filename);
 TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromBuffer(char* buffer, int bufferSize);
@@ -69,6 +75,7 @@ TFAPI(const char*) tfeInterpreterGetOutputName(tflite::Interpreter* interpreter,
 TFAPI(void) tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable);
 TFAPI(void) tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter, int numThreads);
 TFAPI(void) tfeInterpreterRelease(tflite::Interpreter** interpreter);
+TFAPI(int) tfeInterpreterModifyGraphWithDelegate(tflite::Interpreter* interpreter, TfLiteDelegate* delegate);
 
 TFAPI(tflite::InterpreterBuilder*) tfeInterpreterBuilderCreate(tflite::FlatBufferModel* model, tflite::OpResolver* opResolver);
 TFAPI(void) tfeInterpreterBuilderRelease(tflite::InterpreterBuilder** builder);
@@ -94,6 +101,12 @@ TFAPI(TfLiteIntArray*) tfeIntArrayCreate(int size);
 TFAPI(int) tfeIntArrayGetSize(TfLiteIntArray* v);
 TFAPI(int*) tfeIntArrayGetData(TfLiteIntArray* v);
 TFAPI(void) tfeIntArrayRelease(TfLiteIntArray** v);
+
+TFAPI(tflite::NNAPIDelegate*) tfeNNAPIDelegateCreate();
+TFAPI(void) tfeNNAPIDelegateRelease(tflite::NNAPIDelegate** delegate);
+TFAPI(bool) tfeNNAPIDelegateIsSupported(tflite::NNAPIDelegate* delegate);
+TFAPI(TfLiteDelegate*) tfeNNAPIDelegateGetDelegate();
+
 
 //TFAPI(tflite::MutableOpResolver*) tfeMutableOpResolverCreate(tflite::OpResolver** opResolver); 
 //TFAPI(void) tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver);
