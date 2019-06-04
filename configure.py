@@ -33,7 +33,7 @@ except ImportError:
   from distutils.spawn import find_executable as which
 # pylint: enable=g-import-not-at-top
 
-_DEFAULT_CUDA_VERSION = '10'
+_DEFAULT_CUDA_VERSION = '10.0'
 _DEFAULT_CUDNN_VERSION = '7'
 _DEFAULT_TENSORRT_VERSION = '5'
 _DEFAULT_CUDA_COMPUTE_CAPABILITIES = '3.5,7.0'
@@ -1395,6 +1395,7 @@ def main():
     environ_cp['TF_NEED_OPENCL_SYCL'] = '0'
     environ_cp['TF_NEED_COMPUTECPP'] = '0'
     environ_cp['TF_NEED_OPENCL'] = '0'
+    environ_cp['TF_NEED_S3'] = '0'
     environ_cp['TF_CUDA_CLANG'] = '0'
     environ_cp['TF_NEED_TENSORRT'] = '0'
     # TODO(ibiryukov): Investigate using clang as a cpu or cuda compiler on
