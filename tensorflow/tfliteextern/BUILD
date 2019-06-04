@@ -28,7 +28,7 @@ cc_binary(
         "-z defs",
         "-s",
         "-Wl,--gc-sections",
-    ],  "//tensorflow:darwin": [
+    ],  "//tensorflow:macos": [
     	"-lm",
 	"-lpthread",
 	#"-Wl,-install_name,@rpath/libtfliteextern.dylib"

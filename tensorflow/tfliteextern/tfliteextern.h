@@ -41,8 +41,8 @@
 #include "tensorflow/core/public/version.h"
 
 //#ifdef __ANDROID__
-//#include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
-#include "tensorflow/lite/nnapi_delegate.h"
+#include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
+//#include "tensorflow/lite/delegates/nnapi_delegate.h"
 //#endif
 
 //#include "tensorflow/lite/tools/mutable_op_resolver.h"
@@ -94,7 +94,7 @@ TFAPI(void) tfeMemcpy(void* dst, void* src, int length);
 TFAPI(tflite::DynamicBuffer*) tfeDynamicBufferCreate();
 TFAPI(void) tfeDynamicBufferRelease(tflite::DynamicBuffer** buffer);
 TFAPI(void) tfeDynamicBufferAddString(tflite::DynamicBuffer* buffer, char* str, int len);
-TFAPI(void) tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer, TfLiteTensor* tensor);
+TFAPI(void) tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer, TfLiteTensor* tensor, TfLiteIntArray* newShape);
 
 
 TFAPI(TfLiteIntArray*) tfeIntArrayCreate(int size);
@@ -102,11 +102,11 @@ TFAPI(int) tfeIntArrayGetSize(TfLiteIntArray* v);
 TFAPI(int*) tfeIntArrayGetData(TfLiteIntArray* v);
 TFAPI(void) tfeIntArrayRelease(TfLiteIntArray** v);
 
-TFAPI(tflite::NNAPIDelegate*) tfeNNAPIDelegateCreate();
-TFAPI(void) tfeNNAPIDelegateRelease(tflite::NNAPIDelegate** delegate);
-TFAPI(bool) tfeNNAPIDelegateIsSupported(tflite::NNAPIDelegate* delegate);
-TFAPI(TfLiteDelegate*) tfeNNAPIDelegateGetDelegate();
-
+/*
+TFAPI(tflite::StatefulNnApiDelegate*) tfeStatefulNnApiDelegateCreate();
+TFAPI(void) tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate);
+TFAPI(TfLiteDelegate*) tfeStatefulNnApiDelegateGetDelegate();
+*/
 
 //TFAPI(tflite::MutableOpResolver*) tfeMutableOpResolverCreate(tflite::OpResolver** opResolver); 
 //TFAPI(void) tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver);

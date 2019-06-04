@@ -210,9 +210,9 @@ void tfeDynamicBufferAddString(tflite::DynamicBuffer* buffer, char* str, int len
 {
   buffer->AddString(str, len);
 }
-void tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer, TfLiteTensor* tensor)
+void tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer, TfLiteTensor* tensor, TfLiteIntArray* newShape)
 {
-  buffer->WriteToTensor(tensor);
+  buffer->WriteToTensor(tensor, newShape);
 }
 
 TfLiteIntArray* tfeIntArrayCreate(int size)
@@ -233,27 +233,25 @@ void tfeIntArrayRelease(TfLiteIntArray** v)
 	*v = 0;
 }
 
-tflite::NNAPIDelegate* tfeNNAPIDelegateCreate()
+/*
+tflite::StatefulNnApiDelegate* tfeStatefulNnApiDelegateCreate()
 {
-	return new tflite::NNAPIDelegate();
+	return new tflite::StatefulNnApiDelegate();
 }
-void tfeNNAPIDelegateRelease(tflite::NNAPIDelegate** delegate)
+void tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate)
 {
 	delete *delegate;
 	*delegate = 0;
 }
-bool tfeNNAPIDelegateIsSupported(tflite::NNAPIDelegate* delegate)
-{
-	return delegate->IsSupported();
-}
-TfLiteDelegate* tfeNNAPIDelegateGetDelegate()
+TfLiteDelegate* tfeStatefulNnApiDelegateGetDelegate()
 {
 #ifdef __ANDROID__
-	return tflite::NnApiDelegate();
+	return tflite::StatefulNnApiDelegate();
 #else
 	return 0;
 #endif
 }
+*/
 
 //void RegisterSelectedOps(tflite::MutableOpResolver* resolver);
 
