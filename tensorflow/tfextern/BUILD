@@ -41,7 +41,7 @@ tf_cc_shared_object(
     ],
     deps = select({
         "//tensorflow:android": [
-            "//tensorflow/c:c_api",
+            #"//tensorflow/c:c_api",
             #"//tensorflow/core:core_cpu",
             "//tensorflow/core:android_tensorflow_lib"
         ],
