@@ -38,21 +38,21 @@ run_configure_for_gpu_build
 # So we do something special here
 bazel --output_user_root=${TMPDIR} build -c opt --copt=/arch:AVX --announce_rc \
   tensorflow:tensorflow.dll \
-  tensorflow:tensorflow_dll_import_lib \
-  tensorflow/tools/lib_package:clicenses_generate \
-  tensorflow/java:tensorflow_jni.dll \
-  tensorflow/tools/lib_package:jnilicenses_generate
+  tensorflow/tfextern:libtfextern.so \
+  tensorflow/tools/lib_package:clicenses_generate 
+#  tensorflow/java:tensorflow_jni.dll \
+#  tensorflow/tools/lib_package:jnilicenses_generate
 
 DIR=lib_package
 rm -rf ${DIR}
 mkdir -p ${DIR}
 
 # Zip up the .dll and the LICENSE for the JNI library.
-cp bazel-bin/tensorflow/java/tensorflow_jni.dll ${DIR}/tensorflow_jni.dll
-zip -j ${DIR}/libtensorflow_jni-gpu-windows-$(uname -m).zip \
-  ${DIR}/tensorflow_jni.dll \
-  bazel-genfiles/tensorflow/tools/lib_package/include/tensorflow/jni/LICENSE
-rm -f ${DIR}/tensorflow_jni.dll
+#cp bazel-bin/tensorflow/java/tensorflow_jni.dll ${DIR}/tensorflow_jni.dll
+#zip -j ${DIR}/libtensorflow_jni-gpu-windows-$(uname -m).zip \
+#  ${DIR}/tensorflow_jni.dll \
+#  bazel-genfiles/tensorflow/tools/lib_package/include/tensorflow/jni/LICENSE
+#rm -f ${DIR}/tensorflow_jni.dll
 
 # Zip up the .dll, LICENSE and include files for the C library.
 mkdir -p ${DIR}/include/tensorflow/c
