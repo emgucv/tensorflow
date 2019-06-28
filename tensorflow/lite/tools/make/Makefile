@@ -138,6 +138,7 @@ $(wildcard tensorflow/lite/*/*test.cc) \
 $(wildcard tensorflow/lite/*/*/*test.cc) \
 $(wildcard tensorflow/lite/*/*/*/*test.cc) \
 $(wildcard tensorflow/lite/kernels/*test_util.cc) \
+$(wildcard tensorflow/lite/kernels/test_main.cc) \
 $(MINIMAL_SRCS)
 
 BUILD_WITH_MMAP=true
