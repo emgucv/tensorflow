@@ -177,6 +177,10 @@ void tfeImportGraphDefOptionsSetPrefix(TF_ImportGraphDefOptions* opts, const cha
 {
 	TF_ImportGraphDefOptionsSetPrefix(opts, prefix);
 }
+void tfeImportGraphDefOptionsSetDefaultDevice(TF_ImportGraphDefOptions* opts, const char* device)
+{
+	TF_ImportGraphDefOptionsSetDefaultDevice(opts, device);
+}
 void tfeImportGraphDefOptionsAddInputMapping(
 	TF_ImportGraphDefOptions* opts,
 	const char* src_name,
@@ -586,6 +590,34 @@ void tfeDeleteLibraryHandle(TF_Library** libHandle)
 	TF_DeleteLibraryHandle(*libHandle);
 	*libHandle = 0;
 }
+
+//Server
+TF_Server* tfeNewServer(const void* proto, size_t proto_len, TF_Status* status)
+{
+	return TF_NewServer(proto, proto_len, status);
+}
+void tfeServerStart(TF_Server* server, TF_Status* status)
+{
+	TF_ServerStart(server, status);
+}
+void tfeServerStop(TF_Server* server, TF_Status* status)
+{
+	TF_ServerStop(server, status);
+}
+void tfeServerJoin(TF_Server* server, TF_Status* status)
+{
+	TF_ServerJoin(server, status);
+}
+const char* tfeServerTarget(TF_Server* server)
+{
+	return TF_ServerTarget(server);
+}
+void tfeDeleteServer(TF_Server** server)
+{
+	TF_DeleteServer(*server);
+	*server = 0;
+}
+
 
 void tfeMemcpy(void* dst, void* src, int length)
 {

@@ -79,6 +79,7 @@ TFAPI(const char*) tfeMessage(TF_Status* s);
 TFAPI(TF_ImportGraphDefOptions*) tfeNewImportGraphDefOptions();
 TFAPI(void) tfeDeleteImportGraphDefOptions(TF_ImportGraphDefOptions** opts);
 TFAPI(void) tfeImportGraphDefOptionsSetPrefix(TF_ImportGraphDefOptions* opts, const char* prefix);
+TFAPI(void) tfeImportGraphDefOptionsSetDefaultDevice(TF_ImportGraphDefOptions* opts, const char* device);
 TFAPI(void) tfeImportGraphDefOptionsAddInputMapping(
 	TF_ImportGraphDefOptions* opts,
 	const char* src_name,
@@ -181,6 +182,14 @@ TFAPI(int) tfeStringDecode(const char* src, int src_len, const char** dst, size_
 TFAPI(TF_Library*) tfeLoadLibrary(const char* libraryFilename, TF_Status* status);
 TFAPI(TF_Buffer*) tfeGetOpList(TF_Library* libHandle);
 TFAPI(void) tfeDeleteLibraryHandle(TF_Library** libHandle);
+
+//Server
+TFAPI(TF_Server*) tfeNewServer(const void* proto, size_t proto_len, TF_Status* status);
+TFAPI(void) tfeServerStart(TF_Server* server, TF_Status* status);
+TFAPI(void) tfeServerStop(TF_Server* server, TF_Status* status);
+TFAPI(void) tfeServerJoin(TF_Server* server, TF_Status* status);
+TFAPI(const char*) tfeServerTarget(TF_Server* server);
+TFAPI(void) tfeDeleteServer(TF_Server** server);
 
 TFAPI(int) tfeDataTypeSize(TF_DataType dt);
 
