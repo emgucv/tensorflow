@@ -53,4 +53,4 @@ make_library() {
 }
 
 make_library libtensorflow-lite.a
-make_library benchmark-lib.a
+#make_library benchmark-lib.a
