@@ -37,6 +37,8 @@ INCLUDES := \
 -I$(MAKEFILE_DIR)/downloads/absl \
 -I$(MAKEFILE_DIR)/downloads/gemmlowp \
 -I$(MAKEFILE_DIR)/downloads/neon_2_sse \
+-I$(MAKEFILE_DIR)/downloads/googletest/googletest/include \
+-I$(MAKEFILE_DIR)/downloads/googletest/googlemock/include \
 -I$(MAKEFILE_DIR)/downloads/farmhash/src \
 -I$(MAKEFILE_DIR)/downloads/flatbuffers/include \
 -I$(OBJDIR)
@@ -122,7 +124,8 @@ $(wildcard tensorflow/lite/kernels/internal/reference/*.cc) \
 $(PROFILER_SRCS) \
 tensorflow/lite/tools/make/downloads/farmhash/src/farmhash.cc \
 tensorflow/lite/tools/make/downloads/fft2d/fftsg.c \
-tensorflow/lite/tools/make/downloads/flatbuffers/src/util.cpp
+tensorflow/lite/tools/make/downloads/flatbuffers/src/util.cpp \
+$(wildcard tensorflow/tfliteextern/tfliteextern.cc)
 endif
 # Remove any duplicates.
 CORE_CC_ALL_SRCS := $(sort $(CORE_CC_ALL_SRCS))
@@ -133,6 +136,7 @@ $(wildcard tensorflow/lite/*/*/*test.cc) \
 $(wildcard tensorflow/lite/*/*/*/*test.cc) \
 $(wildcard tensorflow/lite/kernels/*test_main.cc) \
 $(wildcard tensorflow/lite/kernels/*test_util.cc) \
+$(wildcard tensorflow/lite/kernels/test_main.cc) \
 $(MINIMAL_SRCS)
 
 BUILD_WITH_MMAP ?= true
@@ -252,7 +256,8 @@ $(OBJDIR)%.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # The target that's compiled if there's no command-line arguments.
-all: $(LIB_PATH)  $(MINIMAL_BINARY) $(BENCHMARK_BINARY)
+#all: $(LIB_PATH)  $(MINIMAL_BINARY) $(BENCHMARK_BINARY)
+all: $(LIB_PATH)  $(MINIMAL_BINARY)
 
 # The target that's compiled for micro-controllers
 micro: $(LIB_PATH)
