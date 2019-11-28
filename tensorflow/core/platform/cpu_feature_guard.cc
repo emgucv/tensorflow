@@ -32,12 +32,12 @@ void CheckFeatureOrDie(CPUFeature feature, const string& feature_name) {
 #ifdef __ANDROID__
     // Some Android emulators seem to indicate they don't support SSE, so to
     // avoid crashes when testing, switch this to a warning.
-    LOG(WARNING)
+    //LOG(WARNING)
 #else
     LOG(FATAL)
-#endif
         << "The TensorFlow library was compiled to use " << feature_name
         << " instructions, but these aren't available on your machine.";
+#endif
   }
 }
 
