@@ -44,10 +44,8 @@
 #include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
 
 #ifdef __ANDROID__
-#include "tensorflow/lite/delegates/gpu/gl_delegate.h"
+#include "tensorflow/lite/delegates/gpu/delegate.h"
 #endif
-
-//#include "tensorflow/lite/delegates/gpu/delegate.h"
 
 //#include "tensorflow/lite/tools/mutable_op_resolver.h"
 
@@ -109,8 +107,8 @@ TFAPI(void) tfeIntArrayRelease(TfLiteIntArray** v);
 TFAPI(tflite::StatefulNnApiDelegate*) tfeStatefulNnApiDelegateCreate(TfLiteDelegate** tfLiteDelegate);
 TFAPI(void) tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate);
 
-TFAPI(TfLiteDelegate*) tfeGpuDelegateCreate();
-TFAPI(void) tfeGpuDelegateDelete(TfLiteDelegate** delegate);
+TFAPI(TfLiteDelegate*) tfeGpuDelegateV2Create();
+TFAPI(void) tfeGpuDelegateV2Delete(TfLiteDelegate** delegate);
 
 
 //TFAPI(tflite::MutableOpResolver*) tfeMutableOpResolverCreate(tflite::OpResolver** opResolver); 

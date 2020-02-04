@@ -41,7 +41,18 @@ cc_binary(
         "manual",
         "notap",
     ],
-    deps = select({
+    deps = select(
+		{
+        "//tensorflow:android": [
+	    "//tensorflow/lite:framework",
+	    "//tensorflow/lite:context",
+	    "//tensorflow/lite:string",
+	    "//tensorflow/lite:string_util",
+	    "//tensorflow/lite:schema_fbs_version",
+	    "//tensorflow/lite/kernels:builtin_ops",
+		"//tensorflow/core:version_lib",
+		"//tensorflow/lite/delegates/gpu:delegate",
+		],
         "//conditions:default": [
 	    "//tensorflow/lite:framework",
 	    "//tensorflow/lite:context",
@@ -56,6 +67,6 @@ cc_binary(
         #"//tensorflow/core:framework_internal",
 	    #"//tensorflow/core:framework",
         #"//tensorflow/core:tensorflow",
-        ],
-    }),
+        ]}
+    ),
 )

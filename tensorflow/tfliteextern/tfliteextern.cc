@@ -248,18 +248,18 @@ void tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate)
 	*delegate = 0;
 }
 
-TfLiteDelegate* tfeGpuDelegateCreate()
+TfLiteDelegate* tfeGpuDelegateV2Create()
 {
 #ifdef __ANDROID__
-    return TfLiteGpuDelegateCreate(nullptr);
+    return TfLiteGpuDelegateV2Create(nullptr);
 #else
     return 0;
 #endif
 }
-void tfeGpuDelegateDelete(TfLiteDelegate** delegate)
+void tfeGpuDelegateV2Delete(TfLiteDelegate** delegate)
 {
 #ifdef __ANDROID__
-    TfLiteGpuDelegateDelete(*delegate);
+    TfLiteGpuDelegateV2Delete(*delegate);
 #endif
     *delegate = 0;
 }
