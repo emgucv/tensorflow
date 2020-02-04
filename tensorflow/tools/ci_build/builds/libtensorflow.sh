@@ -72,6 +72,7 @@ function build_libtensorflow_tarball() {
     //tensorflow/tools/lib_package:libtensorflow_java_test
 
   bazel build ${BAZEL_OPTS} \
+    //tensorflow/tfextern:libtfextern.so \
     //tensorflow/tools/lib_package:libtensorflow.tar.gz \
     //tensorflow/tools/lib_package:libtensorflow_jni.tar.gz \
     //tensorflow/java:libtensorflow.jar \
