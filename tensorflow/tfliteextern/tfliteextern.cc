@@ -50,12 +50,14 @@ tflite::Interpreter* tfeInterpreterCreate()
 {
   return new tflite::Interpreter();
 }
-tflite::Interpreter* tfeInterpreterCreateFromModel(tflite::FlatBufferModel* model, tflite::OpResolver* opResolver)
+void tfeInterpreterCreateFromModel(tflite::Interpreter** interpreter, tflite::FlatBufferModel* model, tflite::OpResolver* opResolver)
 {
-  //tflite::Interpreter* interpreter = new tflite::Interpreter();
-  std::unique_ptr<tflite::Interpreter> interpreter;
-  tflite::InterpreterBuilder(*model, *opResolver)(&interpreter);
-  return interpreter.release();
+  //std::unique_ptr<tflite::Interpreter> interpreterPtr(interpreter, [](tflite::Interpreter*){});
+  std::unique_ptr<tflite::Interpreter> interpreterPtr(*interpreter);
+  //std::unique_ptr<tflite::Interpreter, std::function<void(tflite::Interpreter*)>> interpreterPtr(interpreter, [](tflite::Interpreter* ptr) {} );
+  //std::unique_ptr<tflite::Interpreter> interpreterPtr(interpreter, [](tflite::Interpreter) {});
+  tflite::InterpreterBuilder(*model, *opResolver)(&interpreterPtr);
+  *interpreter = interpreterPtr.release();
 }
 int tfeInterpreterAllocateTensors(tflite::Interpreter* interpreter)
 {
@@ -233,25 +235,35 @@ void tfeIntArrayRelease(TfLiteIntArray** v)
 	*v = 0;
 }
 
-/*
-tflite::StatefulNnApiDelegate* tfeStatefulNnApiDelegateCreate()
+
+tflite::StatefulNnApiDelegate* tfeStatefulNnApiDelegateCreate(TfLiteDelegate** tfLiteDelegate)
 {
-	return new tflite::StatefulNnApiDelegate();
+	tflite::StatefulNnApiDelegate* d = new tflite::StatefulNnApiDelegate();
+    *tfLiteDelegate = static_cast<TfLiteDelegate*>(d);
+    return d;
 }
 void tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate)
 {
 	delete *delegate;
 	*delegate = 0;
 }
-TfLiteDelegate* tfeStatefulNnApiDelegateGetDelegate()
+
+TfLiteDelegate* tfeGpuDelegateCreate()
 {
 #ifdef __ANDROID__
-	return tflite::StatefulNnApiDelegate();
+    return TfLiteGpuDelegateCreate(nullptr);
 #else
-	return 0;
+    return 0;
 #endif
 }
-*/
+void tfeGpuDelegateDelete(TfLiteDelegate** delegate)
+{
+#ifdef __ANDROID__
+    TfLiteGpuDelegateDelete(*delegate);
+#endif
+    *delegate = 0;
+}
+
 
 //void RegisterSelectedOps(tflite::MutableOpResolver* resolver);
 

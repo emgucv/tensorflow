@@ -40,10 +40,14 @@
 #include "tensorflow/lite/string_util.h"
 #include "tensorflow/core/public/version.h"
 
-//#ifdef __ANDROID__
+
 #include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
-//#include "tensorflow/lite/delegates/nnapi_delegate.h"
-//#endif
+
+#ifdef __ANDROID__
+#include "tensorflow/lite/delegates/gpu/gl_delegate.h"
+#endif
+
+//#include "tensorflow/lite/delegates/gpu/delegate.h"
 
 //#include "tensorflow/lite/tools/mutable_op_resolver.h"
 
@@ -58,7 +62,7 @@ TFAPI(tflite::ops::builtin::BuiltinOpResolver*) tfeBuiltinOpResolverCreate(tflit
 TFAPI(void) tfeBuiltinOpResolverRelease(tflite::ops::builtin::BuiltinOpResolver** resolver);
 
 TFAPI(tflite::Interpreter*) tfeInterpreterCreate();
-TFAPI(tflite::Interpreter*) tfeInterpreterCreateFromModel(tflite::FlatBufferModel* model, tflite::OpResolver* opResolver);
+TFAPI(void) tfeInterpreterCreateFromModel(tflite::Interpreter** interpreter, tflite::FlatBufferModel* model, tflite::OpResolver* opResolver);
 TFAPI(int) tfeInterpreterAllocateTensors(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterInvoke(tflite::Interpreter* interpreter);
 //TFAPI(char*) tfeInterpreterInputTensor(tflite::Interpreter* interpreter, int index);
@@ -102,11 +106,12 @@ TFAPI(int) tfeIntArrayGetSize(TfLiteIntArray* v);
 TFAPI(int*) tfeIntArrayGetData(TfLiteIntArray* v);
 TFAPI(void) tfeIntArrayRelease(TfLiteIntArray** v);
 
-/*
-TFAPI(tflite::StatefulNnApiDelegate*) tfeStatefulNnApiDelegateCreate();
+TFAPI(tflite::StatefulNnApiDelegate*) tfeStatefulNnApiDelegateCreate(TfLiteDelegate** tfLiteDelegate);
 TFAPI(void) tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate);
-TFAPI(TfLiteDelegate*) tfeStatefulNnApiDelegateGetDelegate();
-*/
+
+TFAPI(TfLiteDelegate*) tfeGpuDelegateCreate();
+TFAPI(void) tfeGpuDelegateDelete(TfLiteDelegate** delegate);
+
 
 //TFAPI(tflite::MutableOpResolver*) tfeMutableOpResolverCreate(tflite::OpResolver** opResolver); 
 //TFAPI(void) tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver);
