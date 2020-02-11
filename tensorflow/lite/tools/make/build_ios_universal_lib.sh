@@ -28,7 +28,7 @@ usage() {
 }
 
 profiling_args=""
-BUILD_ARCHS="i386 x86_64 armv7 armv7s arm64"
+BUILD_ARCHS="i386 x86_64 armv7s arm64"
 while getopts "a:p" opt_name; do
   case "$opt_name" in
     a) BUILD_ARCHS="${OPTARG}";;
