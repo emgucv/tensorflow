@@ -10,12 +10,40 @@ load(
     "gen_selected_ops"
 )
 
+cc_library(
+    name = "tfliteextern.a",
+    hdrs = ["tfliteextern.h"],
+    srcs = ["tfliteextern.cc"],
+    copts = tflite_copts(),
+    deps = select(
+		{
+        "//tensorflow:android": [
+	    "//tensorflow/lite:framework",
+	    "//tensorflow/lite:context",
+	    "//tensorflow/lite:string",
+	    "//tensorflow/lite:string_util",
+	    "//tensorflow/lite:schema_fbs_version",
+	    "//tensorflow/lite/kernels:builtin_ops",
+		"//tensorflow/core:version_lib",
+		"//tensorflow/lite/delegates/gpu:delegate",
+		],
+        "//conditions:default": [
+	    "//tensorflow/lite:framework",
+	    "//tensorflow/lite:context",
+	    "//tensorflow/lite:string",
+	    "//tensorflow/lite:string_util",
+	    "//tensorflow/lite:schema_fbs_version",
+	    "//tensorflow/lite/kernels:builtin_ops",
+		"//tensorflow/core:version_lib",
+        ]}
+	)
+)
+
 cc_binary(
     name = "libtfliteextern.so",
     srcs = ["tfliteextern.cc",
         "tfliteextern.h"
     ],
-
    copts = tflite_copts() + [ 
         "-ffunction-sections",
         "-fdata-sections",
