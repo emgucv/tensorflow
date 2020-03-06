@@ -2,6 +2,7 @@
 #include "tensorflow/c/c_api_internal.h"
 #include "tensorflow/core/util/port.h"
 #include "tensorflow/core/framework/op_kernel.h"
+#include "tensorflow/core/common_runtime/device_factory.h"
 
 #ifndef  TFAPI_EXPORTS
 #define TFAPI_EXPORTS
@@ -202,3 +203,5 @@ TFAPI(bool) tfeIsGoogleCudaEnabled();
 TFAPI(bool) tfeOpHasKernel(char* operationName);
 
 TFAPI(bool) tfeOpIsRegistered(char* operationName);
+
+TFAPI(void) tfeListAllPhysicalDevices(char* nameBuffer, TF_Status* status);

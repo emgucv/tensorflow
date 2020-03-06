@@ -654,3 +654,25 @@ bool tfeOpHasKernel(char* operationName)
 	}
 	return false;
 }
+
+void tfeListAllPhysicalDevices(char* nameBuffer, TF_Status* status)
+{
+    std::vector<std::string> devices;
+    tensorflow::Status s = tensorflow::DeviceFactory::ListAllPhysicalDevices(&devices);
+
+    int namePosition = 0;
+    int deviceCount = devices.size();
+    int i;
+    for (i = 0; i < deviceCount; i++)
+    {
+        const char* deviceName = devices[i].c_str();
+        int deviceNameLength = strlen(deviceName);
+        memcpy(nameBuffer + namePosition, deviceName, deviceNameLength);
+        namePosition += deviceNameLength;
+        nameBuffer[namePosition] = '\n';
+        namePosition += 1;
+    }
+    nameBuffer[namePosition] = '\0';
+
+}
+
