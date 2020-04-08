@@ -96,7 +96,7 @@ int tfeInterpreterGetInputSize(tflite::Interpreter* interpreter)
 void tfeInterpreterGetInput(tflite::Interpreter* interpreter, int* input)
 {
   std::vector<int> ivec = interpreter->inputs();
-  memcpy(input, &ivec[0], ivec.size());
+  memcpy(input, &ivec[0], ivec.size() * sizeof(int));
 }
 const char* tfeInterpreterGetInputName(tflite::Interpreter* interpreter, int index)
 {
