@@ -36,7 +36,7 @@ export PS4='+ $(date) + '
 # Set bash path
 export BAZEL_SH=${BAZEL_SH:-"C:/msys64/usr/bin/bash"}
 
-export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-Program Files (x86)/Microsoft Visual Studio/Shared/Anaconda3_64}"
+export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-python-virt/python37}"
 
 # Set the path to find bazel.
 export PATH="/c/tools/bazel/:$PATH"
