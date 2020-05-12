@@ -39,6 +39,14 @@ cc_library(
 	)
 )
 
+cc_library(
+    name = "tfliteextern.ios.a",
+    hdrs = ["tfliteextern.h"],
+    srcs = ["tfliteextern.cc"],
+    copts = tflite_copts(),
+    deps = ["//tensorflow/lite/c:c_api"]
+)
+
 cc_binary(
     name = "libtfliteextern.so",
     srcs = ["tfliteextern.cc",

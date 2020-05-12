@@ -75,6 +75,7 @@ cc_library(
     deps = [
         "//tensorflow/lite/c:c_api",
         "//tensorflow/lite/delegates/gpu:metal_delegate",
+        "//tensorflow/tfliteextern:tfliteextern.ios.a"
     ],
 )
 
