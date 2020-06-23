@@ -70,6 +70,12 @@ TFAPI(void) tfeSessionRun(
 	TF_Buffer* run_metadata, TF_Status* status);
 TFAPI(void) tfeSessionListDevices(TF_Session* session, char* nameBuffer, char* typeBuffer, long long* memorySizeBuffer, TF_Status* status);
 
+//SavedModel
+TFAPI(TF_Session*) tfeLoadSessionFromSavedModel(
+        const TF_SessionOptions* session_options, const TF_Buffer* run_options,
+        const char* export_dir, const char* const* tags, int tags_len,
+        TF_Graph* graph, TF_Buffer* meta_graph_def, TF_Status* status);
+
 //Status
 TFAPI(TF_Status*) tfeNewStatus();
 TFAPI(void) tfeDeleteStatus(TF_Status** status);

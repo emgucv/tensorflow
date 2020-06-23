@@ -124,6 +124,33 @@ void tfeSessionListDevices(TF_Session* session, char* nameBuffer, char* typeBuff
 	TF_DeleteDeviceList(deviceList);
 }
 
+TF_Session* tfeLoadSessionFromSavedModel(
+        const TF_SessionOptions* session_options, const TF_Buffer* run_options,
+        const char* export_dir, const char* const* tags, int tags_len,
+        TF_Graph* graph, TF_Buffer* meta_graph_def, TF_Status* status)
+{
+    TF_SessionOptions* tfSessionOptions = 0;
+    if (opts == 0)
+    {
+        tfSessionOptions = TF_NewSessionOptions();
+    } else
+    {
+        tfSessionOptions = session_options;
+    }
+    TF_Session* session = tfeLoadSessionFromSavedModel(
+            tfSessionOptions,
+            run_options,
+            export_dir,
+            tags,
+            tags_len,
+            graph,
+            meta_graph_def,
+            status);
+    if (tfSessionOptions != session_options)
+        TF_DeleteSessionOptions(tfSessionOptions);
+    return session;
+}
+
 TF_Status* tfeNewStatus()
 {
 	return TF_NewStatus();
