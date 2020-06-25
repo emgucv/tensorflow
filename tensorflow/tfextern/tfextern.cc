@@ -125,19 +125,19 @@ void tfeSessionListDevices(TF_Session* session, char* nameBuffer, char* typeBuff
 }
 
 TF_Session* tfeLoadSessionFromSavedModel(
-        const TF_SessionOptions* session_options, const TF_Buffer* run_options,
+        TF_SessionOptions* session_options, const TF_Buffer* run_options,
         const char* export_dir, const char* const* tags, int tags_len,
         TF_Graph* graph, TF_Buffer* meta_graph_def, TF_Status* status)
 {
-    TF_SessionOptions* tfSessionOptions = 0;
-    if (opts == 0)
+    TF_SessionOptions* tfSessionOptions;
+    if (session_options == 0)
     {
         tfSessionOptions = TF_NewSessionOptions();
     } else
     {
         tfSessionOptions = session_options;
     }
-    TF_Session* session = tfeLoadSessionFromSavedModel(
+    TF_Session* session = TF_LoadSessionFromSavedModel(
             tfSessionOptions,
             run_options,
             export_dir,

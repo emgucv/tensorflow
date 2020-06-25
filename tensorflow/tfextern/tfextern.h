@@ -72,7 +72,7 @@ TFAPI(void) tfeSessionListDevices(TF_Session* session, char* nameBuffer, char* t
 
 //SavedModel
 TFAPI(TF_Session*) tfeLoadSessionFromSavedModel(
-        const TF_SessionOptions* session_options, const TF_Buffer* run_options,
+        TF_SessionOptions* session_options, const TF_Buffer* run_options,
         const char* export_dir, const char* const* tags, int tags_len,
         TF_Graph* graph, TF_Buffer* meta_graph_def, TF_Status* status);
 
