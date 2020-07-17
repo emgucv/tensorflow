@@ -34,9 +34,14 @@ mkdir -p "$TMPDIR"
 export PS4='+ $(date) + '
 
 # Set bash path
+
 export BAZEL_SH=${BAZEL_SH:-"C:/msys64/usr/bin/bash"}
 
-export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-python-virt/python37}"
+if [-d "${PYTHON_DIRECTORY:-python-virt/python37}"]; then
+  export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-python-virt/python37}"
+else
+  export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-python38}"
+fi
 
 # Set the path to find bazel.
 export PATH="/c/tools/bazel/:$PATH"
