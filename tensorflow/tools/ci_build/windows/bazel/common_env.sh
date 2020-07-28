@@ -37,18 +37,14 @@ export PS4='+ $(date) + '
 
 export BAZEL_SH=${BAZEL_SH:-"C:/msys64/usr/bin/bash"}
 
-if [-d "${PYTHON_DIRECTORY:-python-virt/python37}"]; then
-  export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-python-virt/python37}"
-else
-  export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-python38}"
-fi
+export PYTHON_BASE_PATH="${PYTHON_DIRECTORY:-Program Files/Anaconda3}"
 
 # Set the path to find bazel.
 export PATH="/c/tools/bazel/:$PATH"
 
 # Set Python path for ./configure
-export PYTHON_BIN_PATH="C:/${PYTHON_BASE_PATH}/python.exe"
-export PYTHON_LIB_PATH="C:/${PYTHON_BASE_PATH}/lib/site-packages"
+export PYTHON_BIN_PATH=${PYTHON_BIN_PATH:-"${PYTHON_BASE_PATH}/python.exe}"}
+export PYTHON_LIB_PATH=${PYTHON_LIB_PATH:-"${PYTHON_BASE_PATH}/lib/site-packages"}
 
 # Add python into PATH, it's needed because gen_git_source.py uses
 # '/usr/bin/env python' as a shebang
