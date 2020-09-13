@@ -181,9 +181,15 @@ TFAPI(const void*) tfeBufferGetData(TF_Buffer* buffer);
 TFAPI(int) tfeBufferGetLength(TF_Buffer* buffer);
 
 //String
-TFAPI(int) tfeStringEncodedSize(int len);
-TFAPI(int) tfeStringEncode(const char* src, int src_len, char* dst, int dst_len, TF_Status* status);
-TFAPI(int) tfeStringDecode(const char* src, int src_len, const char** dst, size_t* dst_len, TF_Status* status);
+TFAPI(TF_TString*) tfeTStringCreate();
+TFAPI(void) tfeTStringInit(TF_TString* str);
+TFAPI(void) tfeTStringDealloc(TF_TString *str);
+TFAPI(void) tfeTStringCopy(TF_TString *dst, const char *src, int len);
+TFAPI(const char*) tfeTStringGetDataPointer(TF_TString *str);
+TFAPI(int) tfeTStringGetSize(TF_TString *str);
+TFAPI(int) tfeTStringGetCapacity(TF_TString *str);
+TFAPI(int) tfeTStringGetType(TF_TString *str);
+TFAPI(int) tfeTStringTypeSize();
 
 //Library
 TFAPI(TF_Library*) tfeLoadLibrary(const char* libraryFilename, TF_Status* status);

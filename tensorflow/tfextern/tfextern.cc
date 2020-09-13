@@ -589,18 +589,45 @@ TF_Buffer* tfeGetAllOpList()
 	return TF_GetAllOpList();
 }
 
-int tfeStringEncodedSize(int len)
+TF_TString* tfeTStringCreate()
 {
-	return static_cast<int>(TF_StringEncodedSize(len));
-}
-int tfeStringEncode(const char* src, int src_len, char* dst, int dst_len, TF_Status* status)
-{
-	return static_cast<int>(TF_StringEncode(src, src_len, dst, dst_len, status));
+	TF_TString* tstring = new TF_TString();
+	TF_TString_Init(tstring);
+	return tstring;
 }
 
-int tfeStringDecode(const char* src, int src_len, const char** dst, size_t* dst_len, TF_Status* status)
+void tfeTStringInit(TF_TString* str)
 {
-	return static_cast<int>(TF_StringDecode(src, src_len, dst, dst_len, status));
+	TF_TString_Init(str);
+}
+void tfeTStringDealloc(TF_TString *str)
+{
+	TF_TString_Dealloc(str);
+}
+void tfeTStringCopy(TF_TString *dst, const char *src, int len)
+{
+	TF_TString_Copy(dst, src, len);
+}
+const char* tfeTStringGetDataPointer(TF_TString *str)
+{
+	return TF_TString_GetDataPointer(str);
+}
+int tfeTStringGetSize(TF_TString *str)
+{
+	return TF_TString_GetSize(str);
+}
+int tfeTStringGetCapacity(TF_TString *str)
+{
+	return TF_TString_GetCapacity(str);
+}
+int tfeTStringGetType(TF_TString *str)
+{
+	return TF_TString_GetType(str);
+}
+int tfeTStringTypeSize()
+{
+	TF_TString ts;
+	return sizeof(ts);
 }
 
 //Library
