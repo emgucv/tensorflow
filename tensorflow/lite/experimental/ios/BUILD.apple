@@ -48,6 +48,7 @@ strip_common_include_path_prefix(
 tflite_ios_static_framework(
     name = "TensorFlowLiteC_framework",
     hdrs = [
+        "//tensorflow/tfliteextern:tfliteextern.h",
         ":c_api.h",
         ":xnnpack_delegate.h",
         "//tensorflow/lite/c:common.h",
@@ -120,6 +121,7 @@ tflite_ios_static_framework(
 cc_library(
     name = "tensorflow_lite_c",
     hdrs = [
+        "//tensorflow/tfliteextern:tfliteextern.h",
         "//tensorflow/lite/c:c_api.h",
         "//tensorflow/lite/c:common.h",
         "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate.h",
@@ -130,6 +132,7 @@ cc_library(
     ],
     deps = [
         "//tensorflow/lite/c:c_api",
+        "//tensorflow/tfliteextern:tfliteextern.ios.a",
         "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
     ],
 )
