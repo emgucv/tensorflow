@@ -265,6 +265,23 @@ void tfeGpuDelegateV2Delete(TfLiteDelegate** delegate)
 }
 
 
+TfLiteDelegate* tfeGpuDelegateCreate()
+{
+#ifdef __IOS__
+    return TFLGpuDelegateCreate(nullptr);
+#else
+    return 0;
+#endif
+}
+void tfeGpuDelegateDelete(TfLiteDelegate** delegate)
+{
+#ifdef __IOS__
+    TFLGpuDelegateDelete(*delegate);
+#endif
+    *delegate = 0;
+}
+
+
 //void RegisterSelectedOps(tflite::MutableOpResolver* resolver);
 
 /*

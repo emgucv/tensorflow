@@ -43,8 +43,10 @@ cc_library(
     name = "tfliteextern.ios.a",
     hdrs = ["tfliteextern.h"],
     srcs = ["tfliteextern.cc"],
-    copts = tflite_copts(),
-    deps = ["//tensorflow/lite/c:c_api"]
+    copts = tflite_copts() + ["-D__IOS__=1"],
+    deps = [
+    "//tensorflow/lite/c:c_api",
+    "//tensorflow/lite/delegates/gpu:metal_delegate"]
 )
 
 cc_binary(

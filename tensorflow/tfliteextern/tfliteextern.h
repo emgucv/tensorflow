@@ -47,6 +47,9 @@
 #include "tensorflow/lite/delegates/gpu/delegate.h"
 #endif
 
+#ifdef __IOS__
+#include "tensorflow/lite/delegates/gpu/metal_delegate.h"
+#endif
 //#include "tensorflow/lite/tools/mutable_op_resolver.h"
 
 TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromFile(char* filename);
@@ -110,6 +113,8 @@ TFAPI(void) tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** dele
 TFAPI(TfLiteDelegate*) tfeGpuDelegateV2Create();
 TFAPI(void) tfeGpuDelegateV2Delete(TfLiteDelegate** delegate);
 
+TFAPI(TfLiteDelegate*) tfeGpuDelegateCreate();
+TFAPI(void) tfeGpuDelegateDelete(TfLiteDelegate** delegate);
 
 //TFAPI(tflite::MutableOpResolver*) tfeMutableOpResolverCreate(tflite::OpResolver** opResolver); 
 //TFAPI(void) tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver);
