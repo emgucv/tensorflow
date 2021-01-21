@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+
+TFLITEEXTERN_SRCS := \
+tensorflow/tfliteextern/tfliteextern.cc
+
+TFLITEEXTERN_OBJS := $(addprefix $(OBJDIR), $(TFLITEEXTERN_SRCS:.cc=.o))
+
+TFLITEEXTERN_LIB_NAME := libtfliteextern.a
+TFLITEEXTERN_LIB_PATH := $(LIBDIR)$(TFLITEEXTERN_LIB_NAME)
+
+$(TFLITEEXTERN_LIB_PATH): $(TFLITEEXTERN_OBJS)
+	@mkdir -p $(dir $@)
+	$(AR) $(ARFLAGS) $(TFLITEEXTERN_LIB_PATH) $(TFLITEEXTERN_OBJS)
+
+tfliteextern: $(TFLITEEXTERN_LIB_PATH)
