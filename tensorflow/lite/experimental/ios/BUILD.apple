@@ -6,6 +6,8 @@ load(
     "TFL_MINIMUM_OS_VERSION",
     "strip_common_include_path_prefix",
     "tflite_ios_static_framework",
+    #"//tensorflow/lite:build_def.bzl",
+    #"tflite_copts",
 )
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_static_framework")
 
@@ -44,20 +46,49 @@ strip_common_include_path_prefix(
     prefix = "TensorFlowLiteC/",
 )
 
+cc_library(
+    name = "tfliteextern.a",
+    hdrs = [
+        "//tensorflow/tfliteextern:tfliteextern.h",
+    ],
+    srcs = [
+        "//tensorflow/tfliteextern:tfliteextern.cc",
+    ],
+    #copts = tflite_copts() + ["-D__IOS__=1"],
+    linkstatic = 1,
+    deps = [
+       	"//tensorflow/lite:framework",
+	"//tensorflow/lite:context",
+	"//tensorflow/lite:string",
+	"//tensorflow/lite:string_util",
+	"//tensorflow/lite:schema_fbs_version",
+	"//tensorflow/lite/kernels:builtin_ops",
+	"//tensorflow/core:version_lib",
+	"//tensorflow/lite/c:common",
+	"//tensorflow/lite/core/api:api",
+	"//tensorflow/lite/kernels/internal:tensor_utils",
+	#"//tensorflow/lite/kernels/internal:audio_utils",
+	#"//tensorflow/lite/c:c_api_experimental",
+	"@cpuinfo//:cpuinfo",
+    ],
+)
+
+
 # bazel build -c opt --config=ios_fat //tensorflow/lite/experimental/ios:TensorFlowLiteC_framework
 tflite_ios_static_framework(
     name = "TensorFlowLiteC_framework",
     hdrs = [
         "//tensorflow/tfliteextern:tfliteextern.h",
-        ":c_api.h",
-        ":xnnpack_delegate.h",
-        "//tensorflow/lite/c:common.h",
     ],
     allowlist_symbols_file = ":allowlist_TensorFlowLiteC.txt",
     bundle_name = "TensorFlowLiteC",
     minimum_os_version = TFL_MINIMUM_OS_VERSION,
     deps = [
-        ":tensorflow_lite_c",
+       	":tfliteextern.a",
+	"//tensorflow/lite/core/api:api",
+	"//tensorflow/lite/kernels/internal:tensor_utils",
+	#"//tensorflow/lite/c:c_api_experimental",
+	"@cpuinfo//:cpuinfo",
     ],
 )
 
