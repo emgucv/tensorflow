@@ -99,6 +99,9 @@ cc_binary(
 	    "//tensorflow/lite:schema_fbs_version",
 	    "//tensorflow/lite/kernels:builtin_ops",
 		"//tensorflow/core:version_lib",
+		"//tensorflow/lite/nnapi:nnapi_lib",
+		"//tensorflow/lite/delegates/nnapi:nnapi_delegate",
+		#"//tensorflow/lite/nnapi:nnapi_handler",
 	    #"//tensorflow/lite/tools:mutable_op_resolver"
 	    #"//tensorflow/c:c_api",
         #"//tensorflow/cc:cc_ops",

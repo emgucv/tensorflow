@@ -78,7 +78,7 @@ TFAPI(const char*) tfeInterpreterGetInputName(tflite::Interpreter* interpreter, 
 TFAPI(int) tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output);
 TFAPI(const char*) tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int index);
-TFAPI(void) tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable);
+//TFAPI(void) tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable);
 TFAPI(void) tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter, int numThreads);
 TFAPI(void) tfeInterpreterRelease(tflite::Interpreter** interpreter);
 TFAPI(int) tfeInterpreterModifyGraphWithDelegate(tflite::Interpreter* interpreter, TfLiteDelegate* delegate);

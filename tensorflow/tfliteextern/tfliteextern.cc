@@ -117,10 +117,10 @@ const char* tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int in
   return interpreter->GetOutputName(index);
 }
 
-void tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable)
-{
-	interpreter->UseNNAPI(enable);
-}
+//void tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable)
+//{
+//	interpreter->UseNNAPI(enable);
+//}
 void tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter, int numThreads)
 {
 	interpreter->SetNumThreads(numThreads);
