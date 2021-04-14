@@ -339,6 +339,7 @@ tflite::ErrorReporter* tflite::CallbackErrorReporter() {
 //}
 //}
 
+/*
 namespace tflite {
 
 TfLiteStatus ResetVariableTensor(TfLiteTensor* tensor) {
@@ -368,5 +369,5 @@ TfLiteStatus ResetVariableTensor(TfLiteTensor* tensor) {
 }
 
 }  // namespace tflite
-
+*/
 #endif

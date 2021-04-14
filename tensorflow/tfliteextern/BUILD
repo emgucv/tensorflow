@@ -46,6 +46,8 @@ cc_library(
     copts = tflite_copts() + ["-D__IOS__=1"],
     deps = [
     "//tensorflow/lite/c:c_api",
+    "//tensorflow/lite/c:common",
+    "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
     "//tensorflow/lite/delegates/gpu:metal_delegate"]
 )
 
