@@ -328,46 +328,110 @@ tflite::ErrorReporter* tflite::CallbackErrorReporter() {
   return error_reporter;
 }
 
-#ifdef __IOS__
-//namespace tflite {
-//namespace ops {
-//namespace custom {
-//  TfLiteRegistration* Register_MFCC() {
-//  return 0;
-//}
-//}
-//}
-//}
 
-/*
-namespace tflite {
-
-TfLiteStatus ResetVariableTensor(TfLiteTensor* tensor) {
-  if (!tensor->is_variable) {
-    return kTfLiteOk;
-  }
-  // TODO(b/115961645): Implement - If a variable tensor has a buffer, reset it
-  // to the value of the buffer.
-  int value = 0;
-  if (tensor->type == kTfLiteInt8) {
-    value = tensor->params.zero_point;
-  }
-  // TODO(b/139446230): Provide a platform header to better handle these
-  // specific scenarios.
-#if __ANDROID__ || defined(__x86_64__) || defined(__i386__) || \
-    defined(__i386) || defined(__x86__) || defined(__X86__) || \
-    defined(_X86_) || defined(_M_IX86) || defined(_M_X64)
-  memset(tensor->data.raw, value, tensor->bytes);
-#else
-  char* raw_ptr = tensor->data.raw;
-  for (size_t i = 0; i < tensor->bytes; ++i) {
-    *raw_ptr = value;
-    raw_ptr++;
-  }
-#endif
-  return kTfLiteOk;
+template<class T>
+void tfePixelsToTensor(
+	unsigned char* pixels,
+    int bytesInPixel,	
+	int width, 
+	int height, 
+	float inputMean, 
+	float scale, 
+	bool flipUpsideDown, 
+	bool swapBR, 
+	T* floatValues)
+{
+	int idx = 0;
+	if (flipUpsideDown)
+	{
+		//handle flip upside down
+		for (int i = 0; i < height; i++)
+			for (int j = 0; j < width; j++)
+			{
+				unsigned char* val = &pixels[((height - i - 1) * width + j) * bytesInPixel];
+				if (swapBR)
+				{
+					floatValues[idx++] = (T) ( *(val+2) - inputMean) * scale;
+					floatValues[idx++] = (T) ( *(val+1) - inputMean) * scale;
+					floatValues[idx++] = (T) ( *val - inputMean) * scale;
+				}
+				else
+				{
+					floatValues[idx++] = (T) ( *val - inputMean) * scale;
+					floatValues[idx++] = (T) ( *(val+1) - inputMean) * scale;
+					floatValues[idx++] = (T) ( *(val+2) - inputMean) * scale;
+				}
+			}
+	}
+	else
+	{
+		for (int i = 0; i < height*width; ++i)
+		{
+			unsigned char* val = &pixels[i * bytesInPixel];
+			if (swapBR)
+			{
+				floatValues[idx++] = (T) (*(val+2) - inputMean) * scale;
+				floatValues[idx++] = (T) (*(val+1) - inputMean) * scale;
+				floatValues[idx++] = (T) (*val - inputMean) * scale;
+			}
+			else
+			{
+				floatValues[idx++] = (T) (*val - inputMean) * scale;
+				floatValues[idx++] = (T) (*(val+1) - inputMean) * scale;
+				floatValues[idx++] = (T) (*(val+2) - inputMean) * scale;
+			}
+		}
+	}
 }
 
-}  // namespace tflite
-*/
-#endif
+void tfePixel32ToPixelFloat(
+	unsigned char* pixels, 
+	int width, 
+	int height, 
+	float inputMean, 
+	float scale, 
+	bool flipUpsideDown, 
+	bool swapBR, 
+	float* floatValues)
+{
+	tfePixelsToTensor<float>(pixels, 4, width, height, inputMean, scale, flipUpsideDown, swapBR, floatValues);
+}
+
+void tfePixel32ToPixelByte(
+	unsigned char* pixels, 
+	int width, 
+	int height, 
+	float inputMean, 
+	float scale, 
+	bool flipUpsideDown, 
+	bool swapBR, 
+	unsigned char* result)
+{
+	tfePixelsToTensor<unsigned char>(pixels, 4, width, height, inputMean, scale, flipUpsideDown, swapBR, result);
+}
+
+void tfePixel24ToPixelFloat(
+	unsigned char* pixels, 
+	int width, 
+	int height, 
+	float inputMean, 
+	float scale, 
+	bool flipUpsideDown, 
+	bool swapBR, 
+	float* floatValues)
+{
+	tfePixelsToTensor<float>(pixels, 3, width, height, inputMean, scale, flipUpsideDown, swapBR, floatValues);
+}
+
+void tfePixel24ToPixelByte(
+	unsigned char* pixels, 
+	int width, 
+	int height, 
+	float inputMean, 
+	float scale, 
+	bool flipUpsideDown, 
+	bool swapBR, 
+	unsigned char* result)
+{
+	tfePixelsToTensor<unsigned char>(pixels, 3, width, height, inputMean, scale, flipUpsideDown, swapBR, result);
+}
