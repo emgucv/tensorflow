@@ -43,14 +43,16 @@ tf_cc_shared_object(
         "//tensorflow:android": [
             #"//tensorflow/c:c_api",
             #"//tensorflow/core:core_cpu",
-            "//tensorflow/core:portable_tensorflow_lib"
+            "//tensorflow/core:portable_tensorflow_lib",
+			"//tensorflow/imgproc:imgproc",
         ],
         "//conditions:default": [
-	    "//tensorflow/c:c_api",
+	        "//tensorflow/c:c_api",
             "//tensorflow/cc:cc_ops",
             "//tensorflow/core:framework_internal",
-	    "//tensorflow/core:framework",
+	        "//tensorflow/core:framework",
             "//tensorflow/core:tensorflow",
+			"//tensorflow/imgproc:imgproc",
         ],
     }),
 )

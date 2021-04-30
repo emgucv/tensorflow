@@ -136,6 +136,7 @@ namespace tflite
 
 TFAPI(void) tfeRedirectError( tflite::ErrorCallback errCallback);
 
+/*
 TFAPI(void) tfePixel32ToPixelFloat(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
 
 TFAPI(void) tfePixel32ToPixelByte(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char* result);
@@ -143,3 +144,4 @@ TFAPI(void) tfePixel32ToPixelByte(unsigned char* pixels, int width, int height, 
 TFAPI(void) tfePixel24ToPixelFloat(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
 
 TFAPI(void) tfePixel24ToPixelByte(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char* result);
+*/
