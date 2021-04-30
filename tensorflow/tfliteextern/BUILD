@@ -12,7 +12,7 @@ load(
 
 cc_library(
     name = "tfliteextern.a",
-    hdrs = ["tfliteextern.h", "pixelToTensor.h"],
+    hdrs = ["tfliteextern.h"],
     srcs = ["tfliteextern.cc"],
     copts = tflite_copts(),
     deps = select(
@@ -43,7 +43,7 @@ cc_library(
 
 cc_library(
     name = "tfliteextern.ios.a",
-    hdrs = ["tfliteextern.h", "pixelToTensor.h"],
+    hdrs = ["tfliteextern.h"],
     srcs = ["tfliteextern.cc"],
     copts = tflite_copts() + ["-D__IOS__=1"],
     deps = [
@@ -61,7 +61,7 @@ cc_binary(
     srcs = ["tfliteextern.cc",
         "tfliteextern.h", 
     ],
-#   hdrs = ["tfliteextern.h", "pixelToTensor.h"],
+#   hdrs = ["tfliteextern.h"],
 #   srcs = ["tfliteextern.cc"],
    copts = tflite_copts() + [ 
         "-ffunction-sections",
