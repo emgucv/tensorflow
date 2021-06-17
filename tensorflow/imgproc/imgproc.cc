@@ -56,7 +56,7 @@ void tfePixelsToTensor(
 }
 
 
-void tfePixel32ToPixelFloat(
+int tfePixel32ToPixelFloat(
 	unsigned char* pixels, 
 	int width, 
 	int height, 
@@ -67,9 +67,10 @@ void tfePixel32ToPixelFloat(
 	float* floatValues)
 {
 	tfePixelsToTensor<float>(pixels, 4, width, height, inputMean, scale, flipUpsideDown, swapBR, floatValues);
+	return width*height*3*sizeof(float);
 }
 
-void tfePixel32ToPixelByte(
+int tfePixel32ToPixelByte(
 	unsigned char* pixels, 
 	int width, 
 	int height, 
@@ -80,9 +81,10 @@ void tfePixel32ToPixelByte(
 	unsigned char* result)
 {
 	tfePixelsToTensor<unsigned char>(pixels, 4, width, height, inputMean, scale, flipUpsideDown, swapBR, result);
+	return width*height*3*sizeof(unsigned char);
 }
 
-void tfePixel24ToPixelFloat(
+int tfePixel24ToPixelFloat(
 	unsigned char* pixels, 
 	int width, 
 	int height, 
@@ -93,9 +95,10 @@ void tfePixel24ToPixelFloat(
 	float* floatValues)
 {
 	tfePixelsToTensor<float>(pixels, 3, width, height, inputMean, scale, flipUpsideDown, swapBR, floatValues);
+	return width*height*3*sizeof(float);
 }
 
-void tfePixel24ToPixelByte(
+int tfePixel24ToPixelByte(
 	unsigned char* pixels, 
 	int width, 
 	int height, 
@@ -106,4 +109,5 @@ void tfePixel24ToPixelByte(
 	unsigned char* result)
 {
 	tfePixelsToTensor<unsigned char>(pixels, 3, width, height, inputMean, scale, flipUpsideDown, swapBR, result);
+	return width*height*3*sizeof(unsigned char);
 }

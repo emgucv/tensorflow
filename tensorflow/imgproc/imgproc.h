@@ -36,10 +36,10 @@
 #include <cstring>
 
 
-TFAPI(void) tfePixel32ToPixelFloat(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
+TFAPI(int) tfePixel32ToPixelFloat(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
 
-TFAPI(void) tfePixel32ToPixelByte(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char* result);
+TFAPI(int) tfePixel32ToPixelByte(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char* result);
 
-TFAPI(void) tfePixel24ToPixelFloat(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
+TFAPI(int) tfePixel24ToPixelFloat(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
 
-TFAPI(void) tfePixel24ToPixelByte(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char* result);
+TFAPI(int) tfePixel24ToPixelByte(unsigned char* pixels, int width, int height, float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char* result);
