@@ -103,6 +103,12 @@ const char* tfeInterpreterGetInputName(tflite::Interpreter* interpreter, int ind
 {
   return interpreter->GetInputName(index);
 }
+int tfeInterpreterResizeInputTensor(tflite::Interpreter* interpreter, int input_index, int* input_dims, int input_dims_size)
+{
+    std::vector<int> dims{input_dims, input_dims + input_dims_size};
+    return interpreter->ResizeInputTensor(interpreter->inputs()[input_index], dims);
+}
+
 int tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter)
 {
   return interpreter->outputs().size();

@@ -75,6 +75,7 @@ TFAPI(int) tfeInterpreterNodesSize(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterGetInputSize(tflite::Interpreter* interpreter);
 TFAPI(void) tfeInterpreterGetInput(tflite::Interpreter* interpreter, int* input);
 TFAPI(const char*) tfeInterpreterGetInputName(tflite::Interpreter* interpreter, int index);
+TFAPI(int) tfeInterpreterResizeInputTensor(tflite::Interpreter* interpreter, int input_index, int* input_dims, int input_dims_size);
 TFAPI(int) tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output);
 TFAPI(const char*) tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int index);
