@@ -678,10 +678,29 @@ void tfeMemcpy(void* dst, void* src, int length)
 	memcpy(dst, src, length);
 }
 
+//util_port
 bool tfeIsGoogleCudaEnabled()
 {
 	return tensorflow::IsGoogleCudaEnabled();
 }
+bool tfeIsBuiltWithROCm()
+{
+	return tensorflow::IsBuiltWithROCm();
+}
+bool tfeIsBuiltWithNvcc()
+{
+	return tensorflow::IsBuiltWithNvcc();
+}
+
+bool tfeGpuSupportsHalfMatMulAndConv()
+{
+	return tensorflow::GpuSupportsHalfMatMulAndConv();
+}
+bool tfeIsMklEnabled()
+{
+	return tensorflow::IsMklEnabled();
+}
+
 
 bool tfeOpIsRegistered(char* operationName)
 {

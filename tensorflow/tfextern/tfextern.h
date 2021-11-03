@@ -210,7 +210,12 @@ TFAPI(TF_Buffer*) tfeGetAllOpList();
 
 TFAPI(void) tfeMemcpy(void* dst, void* src, int length);
 
+//util_port
 TFAPI(bool) tfeIsGoogleCudaEnabled();
+TFAPI(bool) tfeIsBuiltWithROCm();
+TFAPI(bool) tfeIsBuiltWithNvcc();
+TFAPI(bool) tfeGpuSupportsHalfMatMulAndConv();
+TFAPI(bool) tfeIsMklEnabled();
 
 TFAPI(bool) tfeOpHasKernel(char* operationName);
 
