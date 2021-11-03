@@ -37,6 +37,7 @@ run_configure_for_cpu_build
 # cannot be used on Windows since it relies on pkg_tar rules.
 # So we do something special here
 bazel --output_base=${OUTPUT_BASE_DIR} --output_user_root=${OUTPUT_USER_ROOT_DIR} build -c opt --copt=/arch:AVX --announce_rc --config=short_logs \
+  ${TF_BAZEL_EXTRA_CONFIG} \
   :LICENSE \
   tensorflow:tensorflow.dll \
   tensorflow:tensorflow_dll_import_lib \
