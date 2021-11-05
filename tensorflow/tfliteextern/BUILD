@@ -101,7 +101,7 @@ cc_binary(
             "//tensorflow/lite/delegates/gpu:delegate",
             "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
             "//tensorflow/lite/delegates/nnapi:nnapi_delegate",
-			"//tensorflow/imgproc:imgproc",
+            "//tensorflow/imgproc:imgproc",
         ],
         "//conditions:default": [
             "//tensorflow/lite:framework",
@@ -112,6 +112,7 @@ cc_binary(
             "//tensorflow/lite/kernels:builtin_ops",
             "//tensorflow/core:version_lib",
             "//tensorflow/lite/nnapi:nnapi_lib",
+            "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
             "//tensorflow/lite/delegates/nnapi:nnapi_delegate",
             #"//tensorflow/lite/nnapi:nnapi_handler",
             #"//tensorflow/lite/tools:mutable_op_resolver"
