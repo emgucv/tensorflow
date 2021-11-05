@@ -253,12 +253,11 @@ TfLiteDelegate* tfeXNNPackDelegateCreateDefault() {
   return 0;
 #endif
 }
-TfLiteDelegate* tfeXNNPackDelegateCreate(int numThreads,
-                                         bool enableInt8WeightsUnpacking) {
+TfLiteDelegate* tfeXNNPackDelegateCreate(int numThreads) {
 #ifdef TENSORFLOW_LITE_DELEGATES_XNNPACK_XNNPACK_DELEGATE_H_
   TfLiteXNNPackDelegateOptions opt;
   opt.num_threads = numThreads;
-  opt.enable_int8_weights_unpacking = enableInt8WeightsUnpacking;
+  //opt.enable_int8_weights_unpacking = enableInt8WeightsUnpacking;
   return TfLiteXNNPackDelegateCreate(&opt);
 #else
   return 0;

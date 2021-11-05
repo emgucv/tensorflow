@@ -155,8 +155,7 @@ TFAPI(void) tfeGpuDelegateV2Delete(TfLiteDelegate** delegate);
 // tfeMutableOpResolverRelease(tflite::MutableOpResolver** resolver);
 
 TFAPI(TfLiteDelegate*) tfeXNNPackDelegateCreateDefault();
-TFAPI(TfLiteDelegate*)
-tfeXNNPackDelegateCreate(int numThreads, bool enableInt8WeightsUnpacking);
+TFAPI(TfLiteDelegate*) tfeXNNPackDelegateCreate(int numThreads);
 TFAPI(void) tfeTfLiteDelegateRelease(TfLiteDelegate** delegate);
 
 TFAPI(const char*) tfeGetLiteVersion();
