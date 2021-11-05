@@ -18,6 +18,7 @@ libjpegturbo_copts = select({
         "-O3",
         "-fPIC",
         "-w",
+        "-fPIC",
     ],
     ":windows": WIN_COPTS,
     "//conditions:default": [
