@@ -814,11 +814,6 @@ void LaunchConv2DOp<GPUDevice, T>::operator()(
       errors::InvalidArgument("filter must not have zero elements "
                               "(i.e. all dimensions must be non-zero)"));
 
-  OP_REQUIRES(
-      ctx, filter.NumElements() > 0,
-      errors::InvalidArgument("filter must not have zero elements "
-                              "(i.e. all dimensions must be non-zero)"));
-
   // If the filter in-depth (patch_depths) is 1 and smaller than the input
   // depth, it's a depthwise convolution. More generally, if the filter in-depth
   // divides but is smaller than the input depth, it is a grouped convolution.
