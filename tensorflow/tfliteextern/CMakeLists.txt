@@ -6,12 +6,13 @@ ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../lite/c ${CMAKE_CURRENT_BINARY_DI
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/x64)
 
 PROJECT(tfliteextern)
-INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}")
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/../imgproc")
 #INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/../../")
 #INCLUDE_DIRECTORIES("${CMAKE_CACHEFILE_DIR}")
 
 
-add_library(tfliteextern SHARED tfliteextern.cc tfliteextern.h  )
+add_library(tfliteextern SHARED tfliteextern.h tfliteextern.cc ${CMAKE_CURRENT_SOURCE_DIR}/../imgproc/imgproc.h ${CMAKE_CURRENT_SOURCE_DIR}/../imgproc/imgproc.cc)
+
 target_link_libraries(tfliteextern
   tensorflow-lite
 )
