@@ -19,6 +19,11 @@ target_link_libraries(tfliteextern
 )
 ADD_DEPENDENCIES(tfliteextern tensorflow-lite)
 
+IF(TFLITE_ENABLE_XNNPACK)
+ELSE()
+  add_definitions(-DWITHOUT_XNNPACK)
+ENDIF()
+
 IF(MSVC AND CMAKE_CL_64)
   SET(TARGET_ARCH_64 TRUE)
 ELSE()

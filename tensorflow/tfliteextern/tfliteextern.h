@@ -39,10 +39,13 @@
 
 #include "tensorflow/core/public/version.h"
 #include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
-#include "tensorflow/lite/delegates/xnnpack/xnnpack_delegate.h"
 #include "tensorflow/lite/kernels/register.h"
 #include "tensorflow/lite/model.h"
 #include "tensorflow/lite/string_util.h"
+
+#ifndef WITHOUT_XNNPACK
+#include "tensorflow/lite/delegates/xnnpack/xnnpack_delegate.h"
+#endif
 
 #ifdef __ANDROID__
 #include "tensorflow/lite/delegates/gpu/delegate.h"
