@@ -10,6 +10,13 @@ load(
     "gen_selected_ops"
 )
 
+config_setting(
+    name = "tfliteextern_with_xnn",
+    define_values = {
+        "tflite_with_xnnpack": "true",  # matches --define tflite_with_xnnpack=true
+    },
+)
+
 cc_library(
     name = "tfliteextern.a",
     hdrs = ["tfliteextern.h"],
@@ -45,14 +52,21 @@ cc_library(
     name = "tfliteextern.ios.a",
     hdrs = ["tfliteextern.h"],
     srcs = ["tfliteextern.cc"],
-    copts = tflite_copts() + ["-D__IOS__=1"],
+    copts = tflite_copts() + ["-D__IOS__=1"]
+        + select(
+		{
+				"tfliteextern_with_xnn": [],
+				"//conditions:default": ["-DWITHOUT_XNNPACK"],
+		}),
     deps = [
     "//tensorflow/lite/c:c_api",
     "//tensorflow/lite/c:common",
-    "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
     "//tensorflow/lite/delegates/gpu:metal_delegate",
 	"//tensorflow/imgproc:imgproc",
-	]
+	] + select({
+	"tfliteextern_with_xnn": ["//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",],
+	"//conditions:default": [],
+	})
 	
 )
 
@@ -63,10 +77,14 @@ cc_binary(
     ],
 #   hdrs = ["tfliteextern.h"],
 #   srcs = ["tfliteextern.cc"],
-   copts = tflite_copts() + [ 
+    copts = tflite_copts() + [ 
         "-ffunction-sections",
         "-fdata-sections",
-    ],
+    ] + select(
+		{
+				"tfliteextern_with_xnn": [],
+				"//conditions:default": ["-DWITHOUT_XNNPACK"],
+		}),
     linkopts =  select({
         "//tensorflow:android": [
         "-landroid",
@@ -99,10 +117,9 @@ cc_binary(
             "//tensorflow/lite/kernels:builtin_ops",
             "//tensorflow/core:version_lib",
             "//tensorflow/lite/delegates/gpu:delegate",
-            "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
             "//tensorflow/lite/delegates/nnapi:nnapi_delegate",
             "//tensorflow/imgproc:imgproc",
-        ],
+			],
         "//conditions:default": [
             "//tensorflow/lite:framework",
             "//tensorflow/lite:context",
@@ -112,7 +129,6 @@ cc_binary(
             "//tensorflow/lite/kernels:builtin_ops",
             "//tensorflow/core:version_lib",
             "//tensorflow/lite/nnapi:nnapi_lib",
-            "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
             "//tensorflow/lite/delegates/nnapi:nnapi_delegate",
             #"//tensorflow/lite/nnapi:nnapi_handler",
             #"//tensorflow/lite/tools:mutable_op_resolver"
@@ -122,6 +138,10 @@ cc_binary(
             #"//tensorflow/core:framework",
             #"//tensorflow/core:tensorflow",
 			"//tensorflow/imgproc:imgproc",
-        ]}
-    ),
+			]
+		}) + select(
+		{
+				"tfliteextern_with_xnn": ["//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",],
+				"//conditions:default": [],
+		}),
 )
