@@ -2,7 +2,12 @@
 #include "tensorflow/c/c_api_internal.h"
 #include "tensorflow/core/util/port.h"
 #include "tensorflow/core/framework/op_kernel.h"
+#include "tensorflow/core/framework/logging.h"
 #include "tensorflow/core/common_runtime/device_factory.h"
+#include "tensorflow/core/platform/env_time.h"
+#include "tensorflow/core/platform/default/logging.h"
+
+
 
 #ifndef  TFAPI_EXPORTS
 #define TFAPI_EXPORTS
@@ -40,6 +45,8 @@
 //#include <stdint.h>
 #include <cstdlib>
 #include <cstring>
+
+typedef void (TF_CDECL *TfLogListener)( const char* msg);
 
 TFAPI(const char*) tfeGetVersion();
 
@@ -222,3 +229,14 @@ TFAPI(bool) tfeOpHasKernel(char* operationName);
 TFAPI(bool) tfeOpIsRegistered(char* operationName);
 
 TFAPI(void) tfeListAllPhysicalDevices(char* nameBuffer, TF_Status* status);
+
+/** Register a new log listener */
+TFAPI(void) tfeRegisterLogListener( TfLogListener listener);
+
+TFAPI(void) tfeAddLogListenerSink();
+TFAPI(void) tfeRemoveLogListenerSink();
+
+class TFLogListenerSink : public tensorflow::TFLogSink {
+ public:
+  void Send(const tensorflow::TFLogEntry& entry) override;
+};

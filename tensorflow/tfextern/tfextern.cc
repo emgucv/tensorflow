@@ -749,3 +749,79 @@ void tfeListAllPhysicalDevices(char* nameBuffer, TF_Status* status)
 
 }
 
+//static TfLogListener currentListener = 0;
+
+void tfeRegisterLogListener( TfLogListener listener)
+{
+	TF_RegisterLogListener(listener);
+	//currentListener = listener;
+	
+	tensorflow::logging::LogToListeners("Log listener registered.");
+}
+
+
+static tensorflow::TFLogSink* log_listener_sink = new TFLogListenerSink();
+
+void tfeAddLogListenerSink()
+{
+	tensorflow::TFAddLogSink(log_listener_sink);
+}
+
+void tfeRemoveLogListenerSink()
+{
+	tensorflow::TFRemoveLogSink(log_listener_sink);
+}
+
+
+void TFLogListenerSink::Send(const tensorflow::TFLogEntry& entry) 
+{
+	tensorflow::logging::LogToListeners(entry.ToString().c_str());
+  
+  //if (currentListener)
+  //  currentListener(entry.ToString().c_str());
+  
+/*
+  char msg[4096];
+
+  auto now_micros = tensorflow::EnvTime::NowMicros();
+  time_t now_seconds = static_cast<time_t>(now_micros / 1000000);
+  int micros_remainder = static_cast<int>(now_micros % 1000000);
+  const size_t time_buffer_size = 30;
+  char time_buffer[time_buffer_size];
+  strftime(time_buffer, time_buffer_size, "%Y-%m-%d %H:%M:%S",
+           localtime(&now_seconds));
+  const size_t tid_buffer_size = 10;
+  char tid_buffer[tid_buffer_size] = "";
+
+  char sev;
+  switch (entry.log_severity()) {
+    case absl::LogSeverity::kInfo:
+      sev = 'I';
+      break;
+
+    case absl::LogSeverity::kWarning:
+      sev = 'W';
+      break;
+
+    case absl::LogSeverity::kError:
+      sev = 'E';
+      break;
+
+    case absl::LogSeverity::kFatal:
+      sev = 'F';
+      break;
+
+    default:
+      assert(false && "Unknown logging severity");
+      sev = '?';
+      break;
+  }
+
+  sprintf(msg, "%s.%06d: %c%s %s:%d] %s\n", time_buffer,
+          micros_remainder, sev, tid_buffer, entry.FName().c_str(),
+          entry.Line(), entry.ToString().c_str());
+		  
+  tensorflow::logging::LogToListeners(msg);
+*/
+}
+
