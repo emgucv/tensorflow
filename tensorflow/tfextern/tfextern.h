@@ -233,10 +233,19 @@ TFAPI(void) tfeListAllPhysicalDevices(char* nameBuffer, TF_Status* status);
 /** Register a new log listener */
 TFAPI(void) tfeRegisterLogListener( TfLogListener listener);
 
-TFAPI(void) tfeAddLogListenerSink();
-TFAPI(void) tfeRemoveLogListenerSink();
 
 class TFLogListenerSink : public tensorflow::TFLogSink {
  public:
   void Send(const tensorflow::TFLogEntry& entry) override;
+  std::string Get() const { return ss_.str(); }
+  void Clear() { ss_.str(""); ss_.clear(); }
+ private:
+  std::stringstream ss_;
 };
+
+TFAPI(void) tfeAddLogListenerSink(TFLogListenerSink* sink);
+TFAPI(void) tfeRemoveLogListenerSink(TFLogListenerSink* sink);
+
+TFAPI(TFLogListenerSink *) tfeGetDefaultTFLogSink();
+TFAPI(void) TFLogListenerSinkGet(TFLogListenerSink * sink, char* msg);
+TFAPI(void) TFLogListenerSinkClear(TFLogListenerSink * sink);

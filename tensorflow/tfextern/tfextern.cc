@@ -760,68 +760,76 @@ void tfeRegisterLogListener( TfLogListener listener)
 }
 
 
-static tensorflow::TFLogSink* log_listener_sink = new TFLogListenerSink();
+static TFLogListenerSink* log_listener_sink = new TFLogListenerSink();
 
-void tfeAddLogListenerSink()
+void tfeAddLogListenerSink(TFLogListenerSink* sink)
 {
-	tensorflow::TFAddLogSink(log_listener_sink);
+	tensorflow::TFAddLogSink(sink);
 }
 
-void tfeRemoveLogListenerSink()
+void tfeRemoveLogListenerSink(TFLogListenerSink* sink)
 {
-	tensorflow::TFRemoveLogSink(log_listener_sink);
+	tensorflow::TFRemoveLogSink(sink);
 }
 
 
 void TFLogListenerSink::Send(const tensorflow::TFLogEntry& entry) 
 {
-	tensorflow::logging::LogToListeners(entry.ToString().c_str());
-  
-  //if (currentListener)
-  //  currentListener(entry.ToString().c_str());
-  
-/*
-  char msg[4096];
-
-  auto now_micros = tensorflow::EnvTime::NowMicros();
-  time_t now_seconds = static_cast<time_t>(now_micros / 1000000);
-  int micros_remainder = static_cast<int>(now_micros % 1000000);
-  const size_t time_buffer_size = 30;
-  char time_buffer[time_buffer_size];
-  strftime(time_buffer, time_buffer_size, "%Y-%m-%d %H:%M:%S",
+	char msg[4096];
+	
+	auto now_micros = tensorflow::EnvTime::NowMicros();
+    time_t now_seconds = static_cast<time_t>(now_micros / 1000000);
+    int micros_remainder = static_cast<int>(now_micros % 1000000);
+    const size_t time_buffer_size = 30;
+    char time_buffer[time_buffer_size];
+    strftime(time_buffer, time_buffer_size, "%Y-%m-%d %H:%M:%S",
            localtime(&now_seconds));
-  const size_t tid_buffer_size = 10;
-  char tid_buffer[tid_buffer_size] = "";
+	const size_t tid_buffer_size = 10;
+	char tid_buffer[tid_buffer_size] = "";
 
-  char sev;
-  switch (entry.log_severity()) {
-    case absl::LogSeverity::kInfo:
-      sev = 'I';
-      break;
+	char sev;
+	switch (entry.log_severity()) {
+	case absl::LogSeverity::kInfo:
+	  sev = 'I';
+	  break;
 
-    case absl::LogSeverity::kWarning:
-      sev = 'W';
-      break;
+	case absl::LogSeverity::kWarning:
+	  sev = 'W';
+	  break;
 
-    case absl::LogSeverity::kError:
-      sev = 'E';
-      break;
+	case absl::LogSeverity::kError:
+	  sev = 'E';
+	  break;
 
-    case absl::LogSeverity::kFatal:
-      sev = 'F';
-      break;
+	case absl::LogSeverity::kFatal:
+	  sev = 'F';
+	  break;
 
-    default:
-      assert(false && "Unknown logging severity");
-      sev = '?';
-      break;
-  }
+	default:
+	  assert(false && "Unknown logging severity");
+	  sev = '?';
+	  break;
+	}
 
-  sprintf(msg, "%s.%06d: %c%s %s:%d] %s\n", time_buffer,
-          micros_remainder, sev, tid_buffer, entry.FName().c_str(),
-          entry.Line(), entry.ToString().c_str());
+	sprintf(msg, "%s.%06d: %c%s %s:%d] %s\n", time_buffer,
+		  micros_remainder, sev, tid_buffer, entry.FName().c_str(),
+		  entry.Line(), entry.ToString().c_str());
 		  
-  tensorflow::logging::LogToListeners(msg);
-*/
+	ss_ << msg << std::endl;
+
 }
 
+TFLogListenerSink* tfeGetDefaultTFLogSink()
+{
+	return log_listener_sink;
+}
+
+void TFLogListenerSinkGet(TFLogListenerSink* sink, char* msg)
+{
+	sprintf(msg, "%s\n", sink->Get().c_str());
+}
+
+void TFLogListenerSinkClear(TFLogListenerSink * sink)
+{
+	sink->Clear();
+}
