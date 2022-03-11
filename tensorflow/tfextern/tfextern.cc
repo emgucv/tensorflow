@@ -749,35 +749,26 @@ void tfeListAllPhysicalDevices(char* nameBuffer, TF_Status* status)
 
 }
 
-//static TfLogListener currentListener = 0;
-
 void tfeRegisterLogListener( TfLogListener listener)
 {
 	TF_RegisterLogListener(listener);
-	//currentListener = listener;
-	
 	tensorflow::logging::LogToListeners("Log listener registered.");
 }
 
 
-static TFLogListenerSink* log_listener_sink = new TFLogListenerSink();
-
-void tfeAddLogListenerSink(TFLogListenerSink* sink)
+void tfeAddLogSink(tensorflow::TFLogSink* sink)
 {
 	tensorflow::TFAddLogSink(sink);
 }
 
-void tfeRemoveLogListenerSink(TFLogListenerSink* sink)
+void tfeRemoveLogSink(tensorflow::TFLogSink* sink)
 {
 	tensorflow::TFRemoveLogSink(sink);
 }
 
-
-void TFLogListenerSink::Send(const tensorflow::TFLogEntry& entry) 
+void TFLogParseMsg(const tensorflow::TFLogEntry& entry, char* msg)
 {
-	char msg[4096];
-	
-	auto now_micros = tensorflow::EnvTime::NowMicros();
+    auto now_micros = tensorflow::EnvTime::NowMicros();
     time_t now_seconds = static_cast<time_t>(now_micros / 1000000);
     int micros_remainder = static_cast<int>(now_micros % 1000000);
     const size_t time_buffer_size = 30;
@@ -814,22 +805,58 @@ void TFLogListenerSink::Send(const tensorflow::TFLogEntry& entry)
 	sprintf(msg, "%s.%06d: %c%s %s:%d] %s\n", time_buffer,
 		  micros_remainder, sev, tid_buffer, entry.FName().c_str(),
 		  entry.Line(), entry.ToString().c_str());
-		  
-	ss_ << msg << std::endl;
-
 }
 
-TFLogListenerSink* tfeGetDefaultTFLogSink()
+void TFLogListenerSink::Send(const tensorflow::TFLogEntry& entry) 
 {
+	char msg[4096];
+	TFLogParseMsg(entry, msg);
+	ss_ << msg << std::endl;
+}
+
+void TFLogForwarderSink::Send(const tensorflow::TFLogEntry& entry)
+{
+	char msg[4096];
+	TFLogParseMsg(entry, msg);
+    tensorflow::logging::LogToListeners(msg);
+}
+
+TFLogListenerSink* tfeLogListenerSinkCreate( tensorflow::TFLogSink** logSink )
+{
+	TFLogListenerSink* log_listener_sink = new TFLogListenerSink();
+	*logSink = static_cast< tensorflow::TFLogSink* > ( log_listener_sink );
 	return log_listener_sink;
 }
 
-void TFLogListenerSinkGet(TFLogListenerSink* sink, char* msg)
+void tfeLogListenerSinkRelease( TFLogListenerSink** logSink )
+{
+	delete *logSink;
+	*logSink = 0;
+}
+
+int tfeLogListenerSinkGetLogSize(TFLogListenerSink * sink)
+{
+	return sink->GetLogSize();
+}
+
+void tfeLogListenerSinkGet(TFLogListenerSink* sink, char* msg)
 {
 	sprintf(msg, "%s\n", sink->Get().c_str());
 }
 
-void TFLogListenerSinkClear(TFLogListenerSink * sink)
+void tfeLogListenerSinkClear(TFLogListenerSink * sink)
 {
 	sink->Clear();
+}
+
+TFLogForwarderSink* tfeLogForwarderSinkCreate( tensorflow::TFLogSink** logSink )
+{
+	TFLogForwarderSink* log_forwarder_sink = new TFLogForwarderSink();
+	*logSink = static_cast< tensorflow::TFLogSink* > ( log_forwarder_sink );
+	return log_forwarder_sink;
+}
+void tfeLogForwarderSinkRelease( TFLogForwarderSink** logSink )
+{
+	delete *logSink;
+	*logSink = 0;
 }

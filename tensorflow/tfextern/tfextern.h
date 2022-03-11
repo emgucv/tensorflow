@@ -237,15 +237,26 @@ TFAPI(void) tfeRegisterLogListener( TfLogListener listener);
 class TFLogListenerSink : public tensorflow::TFLogSink {
  public:
   void Send(const tensorflow::TFLogEntry& entry) override;
+  int GetLogSize() { int loc0 = ss_.tellg(); ss_.seekg(0, std::ios::end); int size = ss_.tellg(); ss_.seekg(loc0, std::ios::beg); return size; }
   std::string Get() const { return ss_.str(); }
   void Clear() { ss_.str(""); ss_.clear(); }
  private:
   std::stringstream ss_;
 };
 
-TFAPI(void) tfeAddLogListenerSink(TFLogListenerSink* sink);
-TFAPI(void) tfeRemoveLogListenerSink(TFLogListenerSink* sink);
+class TFLogForwarderSink : public tensorflow::TFLogSink {
+ public:
+  void Send(const tensorflow::TFLogEntry& entry) override;
+};
 
-TFAPI(TFLogListenerSink *) tfeGetDefaultTFLogSink();
-TFAPI(void) TFLogListenerSinkGet(TFLogListenerSink * sink, char* msg);
-TFAPI(void) TFLogListenerSinkClear(TFLogListenerSink * sink);
+TFAPI(void) tfeAddLogSink(tensorflow::TFLogSink* sink);
+TFAPI(void) tfeRemoveLogSink(tensorflow::TFLogSink* sink);
+
+TFAPI(TFLogListenerSink*) tfeLogListenerSinkCreate( tensorflow::TFLogSink** logSink );
+TFAPI(void) tfeLogListenerSinkRelease( TFLogListenerSink** logSink );
+TFAPI(int) tfeLogListenerSinkGetLogSize(TFLogListenerSink * sink);
+TFAPI(void) tfeLogListenerSinkGet(TFLogListenerSink * sink, char* msg);
+TFAPI(void) tfeLogListenerSinkClear(TFLogListenerSink * sink);
+
+TFAPI(TFLogForwarderSink*) tfeLogForwarderSinkCreate( tensorflow::TFLogSink** logSink );
+TFAPI(void) tfeLogForwarderSinkRelease( TFLogForwarderSink** logSink );
