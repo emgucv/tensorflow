@@ -206,9 +206,13 @@ void tfeIntArrayRelease(TfLiteIntArray** v) {
 
 tflite::StatefulNnApiDelegate* tfeStatefulNnApiDelegateCreate(
     TfLiteDelegate** tfLiteDelegate) {
+#ifdef __ANDROID__
   tflite::StatefulNnApiDelegate* d = new tflite::StatefulNnApiDelegate();
   *tfLiteDelegate = static_cast<TfLiteDelegate*>(d);
   return d;
+#else
+  return 0;
+#endif
 }
 void tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate) {
   delete *delegate;
@@ -217,7 +221,8 @@ void tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate) {
 
 TfLiteDelegate* tfeGpuDelegateV2Create() {
 #ifdef __ANDROID__
-  return TfLiteGpuDelegateV2Create(nullptr);
+  TfLiteGpuDelegateOptionsV2 options = TfLiteGpuDelegateOptionsV2Default();
+  return TfLiteGpuDelegateV2Create(&options);
 #else
   return 0;
 #endif
