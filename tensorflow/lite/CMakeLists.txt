@@ -84,7 +84,7 @@ if(TFLITE_KERNEL_TEST AND ${CMAKE_CROSSCOMPILING})
   endif()
 endif()
 
-set(CMAKE_CXX_STANDARD 14)  # Some components require C++14.
+set(CMAKE_CXX_STANDARD 20)  # Some components require C++20.
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(_TFLITE_ENABLE_RUY "${TFLITE_ENABLE_RUY}")
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Android")
@@ -180,6 +180,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   # lite/kernels/conv.cc has more than 64k sections so enable /bigobj to
   # support compilation with MSVC2015.
   if(MSVC)
+    add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
     list(APPEND TFLITE_TARGET_PRIVATE_OPTIONS "/bigobj")
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
       message("Disabling MSVC /O2 optimization for Win32")
