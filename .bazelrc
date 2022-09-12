@@ -202,7 +202,7 @@ build:ios_i386 --cpu=ios_i386
 build:ios_x86_64 --config=ios
 build:ios_x86_64 --cpu=ios_x86_64
 build:ios_fat --config=ios
-build:ios_fat --ios_multi_cpus=armv7,arm64,i386,x86_64
+build:ios_fat --ios_multi_cpus=arm64,x86_64
 
 # Config to use a mostly-static build and disable modular op registration
 # support (this will revert to loading TensorFlow with RTLD_GLOBAL in Python).
