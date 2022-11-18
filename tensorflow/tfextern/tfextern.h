@@ -5,7 +5,7 @@
 #include "tensorflow/core/framework/logging.h"
 #include "tensorflow/core/common_runtime/device_factory.h"
 #include "tensorflow/core/platform/env_time.h"
-#include "tensorflow/core/platform/default/logging.h"
+#include "tensorflow/core/platform/logging.h"
 
 
 
