@@ -286,6 +286,12 @@ def if_linux_x86_64(a):
         "//conditions:default": [],
     })
 
+def if_linux_armhf(a):
+    return select({
+        clean_dep("//tensorflow:linux_armhf"): a,
+        "//conditions:default": [],
+    })
+
 def if_override_eigen_strong_inline(a):
     return select({
         clean_dep("//tensorflow:override_eigen_strong_inline"): a,
@@ -1050,7 +1056,7 @@ def tf_gen_op_wrapper_cc(
     tf_cc_binary(
         name = tool,
         copts = tf_copts(),
-        linkopts = if_not_windows(["-lm", "-Wl,-ldl"]) + lrt_if_needed(),
+        linkopts = if_not_windows(["-lm", "-Wl,-ldl"]) + if_linux_armhf(["-latomic"]) + lrt_if_needed(),
         linkstatic = 1,  # Faster to link this one-time-use binary dynamically
         deps = [op_gen] + deps,
     )
@@ -1170,6 +1176,7 @@ def tf_gen_op_wrappers_cc(
             clean_dep("//tensorflow/core:portable_tensorflow_lib"),
         ]),
         copts = tf_copts(),
+        linkopts=if_linux_armhf(["-latomic"]),
         alwayslink = 1,
         visibility = visibility,
         compatible_with = compatible_with,
@@ -1188,6 +1195,7 @@ def tf_gen_op_wrappers_cc(
             clean_dep("//tensorflow/core:portable_tensorflow_lib"),
         ]),
         copts = tf_copts(),
+        linkopts=if_linux_armhf(["-latomic"]),
         alwayslink = 1,
         visibility = [clean_dep("//tensorflow:internal")],
         compatible_with = compatible_with,
