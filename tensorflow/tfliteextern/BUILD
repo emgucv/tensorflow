@@ -61,7 +61,8 @@ cc_library(
     deps = [
     "//tensorflow/lite/c:c_api",
     "//tensorflow/lite/c:common",
-    "//tensorflow/lite/delegates/gpu:metal_delegate",
+    #"//tensorflow/lite/delegates/gpu:metal_delegate",
+    "//tensorflow/lite/kernels:builtin_ops",
 	"//tensorflow/imgproc:imgproc",
 	] + select({
 	"tfliteextern_with_xnn": ["//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",],
