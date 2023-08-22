@@ -165,9 +165,9 @@ class MklAvgPoolingOp : public MklPoolingForwardOpBase<T> {
         output_max->scalar<float>()() = max_input;
       }
     } catch (dnnl::error& e) {
-      string error_msg = "Status: " + std::to_string(e.status) +
-                         ", message: " + string(e.message) + ", in file " +
-                         string(__FILE__) + ":" + std::to_string(__LINE__);
+      string error_msg = "Status: " + std::to_string(e.status) + ", message: " +
+                         string(e.message) + ", in file " + string(__FILE__) +
+                         ":" + std::to_string(__LINE__);
       OP_REQUIRES_OK(
           context,
           errors::Aborted("Operation received an exception:", error_msg));
@@ -277,9 +277,10 @@ class MklAvgPoolingGradOp : public MklPoolingBackwardOpBase<T> {
       memory::dims orig_input_dims_mkl_order =
           orig_input_mkl_shape.IsMklTensor()
               ? orig_input_mkl_shape.GetSizesAsMklDnnDims()
-          : is_pool2d
-              ? TFShapeToMklDnnDimsInNCHW(output_shape, this->data_format_tf_)
-              : TFShapeToMklDnnDimsInNCDHW(output_shape, this->data_format_tf_);
+              : is_pool2d ? TFShapeToMklDnnDimsInNCHW(output_shape,
+                                                      this->data_format_tf_)
+                          : TFShapeToMklDnnDimsInNCDHW(output_shape,
+                                                       this->data_format_tf_);
 
       memory::dims diff_dst_dims =
           grad_mkl_shape.IsMklTensor()
@@ -352,9 +353,9 @@ class MklAvgPoolingGradOp : public MklPoolingBackwardOpBase<T> {
       pooling_bwd->Execute(diff_dst_data, diff_src_data, nullptr,
                            bwd_cpu_stream);
     } catch (dnnl::error& e) {
-      string error_msg = "Status: " + std::to_string(e.status) +
-                         ", message: " + string(e.message) + ", in file " +
-                         string(__FILE__) + ":" + std::to_string(__LINE__);
+      string error_msg = "Status: " + std::to_string(e.status) + ", message: " +
+                         string(e.message) + ", in file " + string(__FILE__) +
+                         ":" + std::to_string(__LINE__);
       OP_REQUIRES_OK(context, errors::Aborted("Compute received an exception:",
                                               error_msg));
     }

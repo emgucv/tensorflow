@@ -194,9 +194,9 @@ class MklMaxPoolingOp : public MklPoolingForwardOpBase<T> {
         pooling_fwd->Execute(src_data, dst_data, ws_data, fwd_cpu_stream);
       }
     } catch (dnnl::error& e) {
-      string error_msg = "Status: " + std::to_string(e.status) +
-                         ", message: " + string(e.message) + ", in file " +
-                         string(__FILE__) + ":" + std::to_string(__LINE__);
+      string error_msg = "Status: " + std::to_string(e.status) + ", message: " +
+                         string(e.message) + ", in file " + string(__FILE__) +
+                         ":" + std::to_string(__LINE__);
       OP_REQUIRES_OK(context, errors::Aborted("Compute received an exception:",
                                               error_msg));
     }
@@ -358,9 +358,9 @@ class MklMaxPoolingGradOp : public MklPoolingBackwardOpBase<T> {
       pooling_bwd->Execute(diff_dst_data, diff_src_data, ws_data,
                            bwd_cpu_stream);
     } catch (dnnl::error& e) {
-      string error_msg = "Status:" + std::to_string(e.status) +
-                         ", message: " + string(e.message) + ". in file " +
-                         string(__FILE__) + ":" + std::to_string(__LINE__);
+      string error_msg = "Status:" + std::to_string(e.status) + ", message: " +
+                         string(e.message) + ". in file " + string(__FILE__) +
+                         ":" + std::to_string(__LINE__);
       OP_REQUIRES_OK(context, errors::Aborted("Compute received an exception:",
                                               error_msg));
     }
