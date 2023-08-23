@@ -17,6 +17,7 @@ limitations under the License.
 #include <unordered_map>
 #include <vector>
 
+#include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
 #include "dnnl.hpp"
 #include "tensorflow/core/framework/bounds_check.h"
 #include "tensorflow/core/framework/op_kernel.h"
@@ -31,7 +32,6 @@ limitations under the License.
 #include "tensorflow/core/lib/core/status.h"
 #include "tensorflow/core/platform/types.h"
 #include "tensorflow/core/util/mkl_util.h"
-#include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
 #ifdef DNNL_AARCH64_USE_ACL
 #include "tensorflow/core/platform/mutex.h"
 #endif
@@ -202,12 +202,13 @@ class EigenConcatBaseOp : public OpKernel {
       const auto in = values[i];
       const bool in_is_scalar = TensorShapeUtils::IsScalar(input_shapes[i]);
       OP_REQUIRES(
-          c, (input_shapes[i].dims() == input_dims) ||
-                 (input_is_scalar && in_is_scalar),
+          c,
+          (input_shapes[i].dims() == input_dims) ||
+              (input_is_scalar && in_is_scalar),
           errors::InvalidArgument(
               "ConcatOp : Ranks of all input tensors should match: shape[0] = ",
-              input_shape.DebugString(), " vs. shape[", i, "] = ",
-              input_shapes[i].DebugString()));
+              input_shape.DebugString(), " vs. shape[", i,
+              "] = ", input_shapes[i].DebugString()));
       if (in.NumElements() > 0) {
         int64 inputs_flat_dim1 = in.NumElements() / inputs_flat_dim0;
         inputs_flat.emplace_back(new typename TTypes<T, 2>::ConstMatrix(

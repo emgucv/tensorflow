@@ -281,8 +281,9 @@ class MklQuantizeV2Op : public OpKernel {
   explicit MklQuantizeV2Op(OpKernelConstruction* ctx) : OpKernel(ctx) {
     string mode_string;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("mode", &mode_string));
-    OP_REQUIRES(ctx, (mode_string == "MIN_COMBINED" ||
-                      mode_string == "MIN_FIRST" || mode_string == "SCALED"),
+    OP_REQUIRES(ctx,
+                (mode_string == "MIN_COMBINED" || mode_string == "MIN_FIRST" ||
+                 mode_string == "SCALED"),
                 errors::InvalidArgument("Mode string must be 'MIN_COMBINED',"
                                         " 'MIN_FIRST', or 'SCALED', is '" +
                                         mode_string + "'"));
@@ -296,8 +297,9 @@ class MklQuantizeV2Op : public OpKernel {
 
     string round_mode_string;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("round_mode", &round_mode_string));
-    OP_REQUIRES(ctx, (round_mode_string == "HALF_AWAY_FROM_ZERO" ||
-                      round_mode_string == "HALF_TO_EVEN"),
+    OP_REQUIRES(ctx,
+                (round_mode_string == "HALF_AWAY_FROM_ZERO" ||
+                 round_mode_string == "HALF_TO_EVEN"),
                 errors::InvalidArgument("Round mode string must be "
                                         "'HALF_AWAY_FROM_ZERO' or "
                                         "'HALF_TO_EVEN', is '" +
