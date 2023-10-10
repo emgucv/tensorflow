@@ -30,6 +30,9 @@ tf_cc_shared_object(
     	"-lm",
 	"-lpthread",
 	#"-Wl,-install_name,@rpath/libtfextern.dylib"
+    ], "//tensorflow:linux_aarch64": [
+        "-lm", 
+    	"-Wl,--stub-group-size=1048576"
     ],
 	"//conditions:default": ["-lm"],
     }),
