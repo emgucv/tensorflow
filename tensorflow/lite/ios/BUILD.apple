@@ -118,6 +118,7 @@ strip_common_include_path_prefix(
 tflite_ios_framework(
     name = "TensorFlowLiteC_framework",
     hdrs = [
+        "//tensorflow/tfliteextern:tfliteextern.h",
         ":builtin_ops.h",
         ":c_api.h",
         ":c_api_experimental.h",
@@ -172,6 +173,7 @@ tflite_ios_xcframework(
 ios_static_framework(
     name = "TensorFlowLiteC_static_framework",
     hdrs = [
+        "//tensorflow/tfliteextern:tfliteextern.h",
         ":builtin_ops.h",
         ":c_api.h",
         ":c_api_experimental.h",
@@ -255,6 +257,7 @@ tflite_ios_framework(
 cc_library(
     name = "tensorflow_lite_c",
     hdrs = [
+        "//tensorflow/tfliteextern:tfliteextern.h",
         "//tensorflow/lite:builtin_ops.h",
         "//tensorflow/lite/core/async/c:types.h",
         "//tensorflow/lite/core/c:c_api.h",
@@ -281,6 +284,7 @@ cc_library(
         "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
         "//tensorflow/lite/profiling/telemetry/c:profiler",
         "//tensorflow/lite/profiling/telemetry/c:telemetry_setting",
+        "//tensorflow/tfliteextern:tfliteextern.ios.a"
     ],
 )
 
