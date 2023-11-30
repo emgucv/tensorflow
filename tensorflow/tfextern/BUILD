@@ -6,9 +6,10 @@ load(
     "tf_opts_nortti_if_android",
     "if_android",
     "tf_cc_shared_object",
+    "tf_cc_test",
 )
 
-#cc_binary(
+
 tf_cc_shared_object(
     name = "libtfextern.so",
     srcs = ["tfextern.cc",
@@ -58,4 +59,37 @@ tf_cc_shared_object(
 			"//tensorflow/imgproc:imgproc",
         ],
     }),
+)
+
+# -----------------------------------------------------------------------------
+# Tests
+
+tf_cc_test(
+    name = "tfextern_test",
+    srcs = ["tfextern_test.cc",
+            "tfextern_test.h",
+            "tfextern.cc",
+            "tfextern.h"],
+    deps = select({
+            "//tensorflow:android": [
+                #":libtfextern.so",
+                #"//tensorflow/c:c_api",
+                #"//tensorflow/core:core_cpu",
+                "//tensorflow/core:portable_tensorflow_lib",
+    			"//tensorflow/imgproc:imgproc",
+            ],
+            "//conditions:default": [
+                #":libtfextern.so",
+    	        "//tensorflow/c:c_api",
+                "//tensorflow/cc:cc_ops",
+                "//tensorflow/core:framework_internal",
+    	        "//tensorflow/core:framework",
+                "//tensorflow/core:tensorflow",
+    			"//tensorflow/imgproc:imgproc",
+            ],
+        }),
+    #extra_copts = ["-std=c11"],
+    #deps = [
+    #    ":libtfextern.so",
+    #],
 )
