@@ -27,7 +27,9 @@ fi
 # build_libtensorflow_tarball in ../builds/libtensorflow.sh
 # cannot be used on Windows since it relies on pkg_tar rules.
 # So we do something special here
-bazel --output_user_root=${TMPDIR} build \
+bazel --output_base=${OUTPUT_BASE_DIR} \
+  --output_user_root=${OUTPUT_USER_ROOT_DIR} \
+  build \
   -c opt \
   --copt=/arch:AVX \
   --announce_rc \

@@ -684,6 +684,11 @@ const Edge* Graph::AddControlEdge(Node* source, Node* dest,
                                   bool allow_duplicates) {
   if (!allow_duplicates) {
     for (const Edge* edge : dest->in_edges()) {
+	  if (!edge)
+	  {
+		VLOG(1) << "Warning: Node contains null in_edges, skipping for now.";
+		continue;
+	  }
       if (edge->IsControlEdge() && edge->src() == source) {
         // The requested edge already exists.
         return nullptr;
