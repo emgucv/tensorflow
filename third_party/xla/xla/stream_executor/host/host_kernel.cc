@@ -116,7 +116,7 @@ absl::Status HostKernel::Launch(
   for (uint64_t i = 0; i < num_partitions; ++i) {
     const SE_HOST_KernelError** status = &statuses[i];
     const uint64_t starting_i = i * block_size;
-    auto func = [this, kernel, starting_i, &kernel_thread_dims, &args, &bc,
+    auto func = [this, kernel, block_size, starting_i, &kernel_thread_dims, &args, &bc,
                  status]() {
       *status =
           worker(kernel, block_size, starting_i, kernel_thread_dims, args);
