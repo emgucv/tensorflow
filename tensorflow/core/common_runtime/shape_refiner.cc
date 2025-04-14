@@ -224,6 +224,11 @@ Status ShapeRefiner::AddNodeInternal(
   // from 'input's InferenceContext, and store into this node's
   // InferenceContext.
   for (const Edge* e : node->in_edges()) {
+	if (!e)
+	{
+		VLOG(1) << "Warning: Node contains null in_edges, skipping for now.";
+		continue;
+	}
     if (e->IsControlEdge()) continue;
 
     if (e->dst_input() < 0) {
