@@ -38,7 +38,29 @@ set(CPUINFO_BUILD_UNIT_TESTS OFF CACHE BOOL "Disable cpuinfo unit tests")
 set(CPUINFO_BUILD_MOCK_TESTS OFF CACHE BOOL "Disable cpuinfo cpuinfo mock tests")
 set(CPUINFO_BUILD_BENCHMARKS OFF CACHE BOOL "Disable cpuinfo micro-benchmarks")
 
+SET(CMAKE_SYSTEM_PROCESSOR_OLD "")
+IF("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "aarch64")
+  MESSAGE(STATUS ">>>>>>>>>>>>>>>>> CMAKE_SYSYTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR} >>>>>>>>>>>> ")
+  IF(IS_ARM64)
+    #DO nothing
+    MESSAGE(STATUS ">>>>>>>>>>>>>>>>> Building for aarch64 ... >>>>>>>>>>>> ")
+  ELSE()
+    MESSAGE(STATUS ">>>>>>>>>>>>>>>>> Building for 32bit arm, need to patch CMAKE_SYSTEM_PROCESSOR for cpuinfo ... >>>>>>>>>>>> ")
+    #FIX CMAKE_SYSTEM_PROCESSOR to work around CPUINFO library issue
+    SET(CMAKE_SYSTEM_PROCESSOR_OLD ${CMAKE_SYSTEM_PROCESSOR})
+    SET(CMAKE_SYSTEM_PROCESSOR "armv7")
+    MESSAGE(STATUS ">>>>>>>>>>>>>>>>> CMAKE_SYSYTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR} >>>>>>>>>>>> ")
+  ENDIF()
+ENDIF()
+
 add_subdirectory(
   "${cpuinfo_SOURCE_DIR}"
   "${cpuinfo_BINARY_DIR}"
 )
+
+IF("${CMAKE_SYSTEM_PROCESSOR_OLD}" STREQUAL "")
+  MESSAGE(STATUS ">>>>>>>>>>>>>>>>> Done configuring cpuinfo for 64bit binary: CMAKE_SYSYTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR} >>>>>>>>>>>> ")
+ELSE()
+  SET(CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR_OLD})
+  MESSAGE(STATUS ">>>>>>>>>>>>>>>>> Done configuring cpuinfo for 32bit binary: CMAKE_SYSYTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}  >>>>>>>>>>>> ")
+ENDIF()
