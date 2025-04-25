@@ -685,7 +685,7 @@ build:release_arm64_linux --config=mkl_aarch64_threadpool
 build:release_arm64_linux --copt=-flax-vector-conversions
 test:release_arm64_linux --flaky_test_attempts=3
 
-build:release_cpu_macos --config=avx_linux
+#build:release_cpu_macos --config=avx_linux
 
 # Base build configs for macOS
 build:release_macos_base --action_env  DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
