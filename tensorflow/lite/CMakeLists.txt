@@ -38,6 +38,11 @@ cmake_policy(SET CMP0028 NEW)
 # Enable MACOSX_RPATH (@rpath) for built dynamic libraries.
 cmake_policy(SET CMP0042 NEW)
 project(tensorflow-lite C CXX)
+
+IF (MSVC)
+  add_definitions(-D_USE_MATH_DEFINES)
+ENDIF()
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(TENSORFLOW_SOURCE_DIR "" CACHE PATH
   "Directory that contains the TensorFlow project"
@@ -240,6 +245,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   # lite/kernels/conv.cc has more than 64k sections so enable /bigobj to
   # support compilation with MSVC2015.
   if(MSVC)
+    add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
     list(APPEND TFLITE_TARGET_PRIVATE_OPTIONS "/bigobj")
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
       message("Disabling MSVC /O2 optimization for Win32")
