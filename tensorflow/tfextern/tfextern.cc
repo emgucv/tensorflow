@@ -756,17 +756,17 @@ void tfeRegisterLogListener( TfLogListener listener)
 }
 
 
-void tfeAddLogSink(tensorflow::TFLogSink* sink)
+void tfeAddLogSink(tsl::TFLogSink* sink)
 {
-	tensorflow::TFAddLogSink(sink);
+	tsl::TFAddLogSink(sink);
 }
 
-void tfeRemoveLogSink(tensorflow::TFLogSink* sink)
+void tfeRemoveLogSink(tsl::TFLogSink* sink)
 {
-	tensorflow::TFRemoveLogSink(sink);
+	tsl::TFRemoveLogSink(sink);
 }
 
-void TFLogParseMsg(const tensorflow::TFLogEntry& entry, char* msg)
+void TFLogParseMsg(const tsl::TFLogEntry& entry, char* msg)
 {
     auto now_micros = tensorflow::EnvTime::NowMicros();
     time_t now_seconds = static_cast<time_t>(now_micros / 1000000);
@@ -807,24 +807,24 @@ void TFLogParseMsg(const tensorflow::TFLogEntry& entry, char* msg)
 		  entry.Line(), entry.ToString().c_str());
 }
 
-void TFLogListenerSink::Send(const tensorflow::TFLogEntry& entry) 
+void TFLogListenerSink::Send(const tsl::TFLogEntry& entry) 
 {
 	char msg[4096];
 	TFLogParseMsg(entry, msg);
 	ss_ << msg << std::endl;
 }
 
-void TFLogForwarderSink::Send(const tensorflow::TFLogEntry& entry)
+void TFLogForwarderSink::Send(const tsl::TFLogEntry& entry)
 {
 	char msg[4096];
 	TFLogParseMsg(entry, msg);
     tensorflow::logging::LogToListeners(msg);
 }
 
-TFLogListenerSink* tfeLogListenerSinkCreate( tensorflow::TFLogSink** logSink )
+TFLogListenerSink* tfeLogListenerSinkCreate( tsl::TFLogSink** logSink )
 {
 	TFLogListenerSink* log_listener_sink = new TFLogListenerSink();
-	*logSink = static_cast< tensorflow::TFLogSink* > ( log_listener_sink );
+	*logSink = static_cast< tsl::TFLogSink* > ( log_listener_sink );
 	return log_listener_sink;
 }
 
@@ -849,10 +849,10 @@ void tfeLogListenerSinkClear(TFLogListenerSink * sink)
 	sink->Clear();
 }
 
-TFLogForwarderSink* tfeLogForwarderSinkCreate( tensorflow::TFLogSink** logSink )
+TFLogForwarderSink* tfeLogForwarderSinkCreate( tsl::TFLogSink** logSink )
 {
 	TFLogForwarderSink* log_forwarder_sink = new TFLogForwarderSink();
-	*logSink = static_cast< tensorflow::TFLogSink* > ( log_forwarder_sink );
+	*logSink = static_cast< tsl::TFLogSink* > ( log_forwarder_sink );
 	return log_forwarder_sink;
 }
 void tfeLogForwarderSinkRelease( TFLogForwarderSink** logSink )
