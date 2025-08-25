@@ -111,6 +111,7 @@ cc_binary(
         {
         "//tensorflow:android": [
             "//tensorflow/lite:framework",
+			"//tensorflow/lite:version",
             "//tensorflow/lite:context",
             "//tensorflow/lite:string",
             "//tensorflow/lite:string_util",
@@ -123,6 +124,7 @@ cc_binary(
 			],
         "//conditions:default": [
             "//tensorflow/lite:framework",
+			"//tensorflow/lite:version",
             "//tensorflow/lite:context",
             "//tensorflow/lite:string",
             "//tensorflow/lite:string_util",
@@ -133,11 +135,6 @@ cc_binary(
             "//tensorflow/lite/delegates/nnapi:nnapi_delegate",
             #"//tensorflow/lite/nnapi:nnapi_handler",
             #"//tensorflow/lite/tools:mutable_op_resolver"
-            #"//tensorflow/c:c_api",
-            #"//tensorflow/cc:cc_ops",
-            #"//tensorflow/core:framework_internal",
-            #"//tensorflow/core:framework",
-            #"//tensorflow/core:tensorflow",
 			"//tensorflow/imgproc:imgproc",
 			]
 		}) + select(
