@@ -35,6 +35,7 @@ limitations under the License.
 namespace tflite {
 namespace model_builder {
 
+class Tensor;
 class InterpreterInfo;
 class Graph;
 
@@ -94,7 +95,7 @@ class [[nodiscard]] Buffer {
       : builder_(builder), buffer_idx_(buffer_idx) {}
 
   friend class Helper;
-  friend class Tensor;
+  friend class tflite::model_builder::Tensor;
 
   InterpreterInfo* builder_;
   BufferIdx buffer_idx_;
