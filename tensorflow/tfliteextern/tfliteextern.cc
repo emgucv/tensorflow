@@ -27,6 +27,7 @@ tflite::FlatBufferModel::BuildFromModel(other); return model.release();
 bool tfeFlatBufferModelInitialized(tflite::FlatBufferModel* model) {
   return model->initialized();
 }
+
 bool tfeFlatBufferModelCheckModelIdentifier(tflite::FlatBufferModel* model) {
   return model->CheckModelIdentifier();
 }
@@ -51,16 +52,11 @@ void tfeBuiltinOpResolverRelease(
 tflite::Interpreter* tfeInterpreterCreate() {
   return new tflite::Interpreter();
 }
-void tfeInterpreterCreateFromModel(tflite::Interpreter** interpreter,
-                                   tflite::FlatBufferModel* model,
-                                   tflite::OpResolver* opResolver) {
-  // std::unique_ptr<tflite::Interpreter> interpreterPtr(interpreter,
-  // [](tflite::Interpreter*){});
+void tfeInterpreterCreateFromModel(
+    tflite::Interpreter** interpreter,
+    tflite::FlatBufferModel* model,
+    tflite::OpResolver* opResolver) {
   std::unique_ptr<tflite::Interpreter> interpreterPtr(*interpreter);
-  // std::unique_ptr<tflite::Interpreter,
-  // std::function<void(tflite::Interpreter*)>> interpreterPtr(interpreter,
-  // [](tflite::Interpreter* ptr) {} ); std::unique_ptr<tflite::Interpreter>
-  // interpreterPtr(interpreter, [](tflite::Interpreter) {});
   tflite::InterpreterBuilder(*model, *opResolver)(&interpreterPtr);
   *interpreter = interpreterPtr.release();
 }
@@ -80,8 +76,9 @@ char* tfeInterpreterOutputTensor(tflite::Interpreter* interpreter, int index)
   return interpreter->typed_output_tensor<char>(index);
 }
 */
-TfLiteTensor* tfeInterpreterGetTensor(tflite::Interpreter* interpreter,
-                                      int index) {
+TfLiteTensor* tfeInterpreterGetTensor(
+    tflite::Interpreter* interpreter,
+    int index) {
   return interpreter->tensor(index);
 }
 int tfeInterpreterTensorSize(tflite::Interpreter* interpreter) {
@@ -93,7 +90,9 @@ int tfeInterpreterNodesSize(tflite::Interpreter* interpreter) {
 int tfeInterpreterGetInputSize(tflite::Interpreter* interpreter) {
   return interpreter->inputs().size();
 }
-void tfeInterpreterGetInput(tflite::Interpreter* interpreter, int* input) {
+void tfeInterpreterGetInput(
+    tflite::Interpreter* interpreter, 
+    int* input) {
   std::vector<int> ivec = interpreter->inputs();
   memcpy(input, &ivec[0], ivec.size() * sizeof(int));
 }
@@ -101,24 +100,30 @@ const char* tfeInterpreterGetInputName(tflite::Interpreter* interpreter,
                                        int index) {
   return interpreter->GetInputName(index);
 }
-int tfeInterpreterResizeInputTensor(tflite::Interpreter* interpreter,
-                                    int input_index, int* input_dims,
-                                    int input_dims_size) {
+int tfeInterpreterResizeInputTensor(
+    tflite::Interpreter* interpreter,
+    int input_index, 
+    int* input_dims,
+    int input_dims_size) {
   std::vector<int> dims{input_dims, input_dims + input_dims_size};
-  return interpreter->ResizeInputTensor(interpreter->inputs()[input_index],
-                                        dims);
+  return interpreter->ResizeInputTensor(
+      interpreter->inputs()[input_index], 
+      dims);
 }
 
 int tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter) {
   return interpreter->outputs().size();
 }
-int tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output) {
+int tfeInterpreterGetOutput(
+    tflite::Interpreter* interpreter, 
+    int* output) {
   std::vector<int> ovec = interpreter->outputs();
   memcpy(output, &ovec[0], ovec.size() * sizeof(int));
   return ovec.size();
 }
-const char* tfeInterpreterGetOutputName(tflite::Interpreter* interpreter,
-                                        int index) {
+const char* tfeInterpreterGetOutputName(
+    tflite::Interpreter* interpreter,
+    int index) {
   return interpreter->GetOutputName(index);
 }
 
@@ -126,8 +131,9 @@ const char* tfeInterpreterGetOutputName(tflite::Interpreter* interpreter,
 //{
 //	interpreter->UseNNAPI(enable);
 //}
-void tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter,
-                                 int numThreads) {
+void tfeInterpreterSetNumThreads(
+    tflite::Interpreter* interpreter,
+    int numThreads) {
   interpreter->SetNumThreads(numThreads);
 }
 
@@ -136,13 +142,15 @@ void tfeInterpreterRelease(tflite::Interpreter** interpreter) {
   *interpreter = 0;
 }
 
-int tfeInterpreterModifyGraphWithDelegate(tflite::Interpreter* interpreter,
-                                          TfLiteDelegate* delegate) {
+int tfeInterpreterModifyGraphWithDelegate(
+    tflite::Interpreter* interpreter,
+    TfLiteDelegate* delegate) {
   return (int)interpreter->ModifyGraphWithDelegate(delegate);
 }
 
 tflite::InterpreterBuilder* tfeInterpreterBuilderCreate(
-    tflite::FlatBufferModel* model, tflite::OpResolver* opResolver) {
+    tflite::FlatBufferModel* model, 
+    tflite::OpResolver* opResolver) {
   return new tflite::InterpreterBuilder(*model, *opResolver);
 }
 
@@ -150,8 +158,9 @@ void tfeInterpreterBuilderRelease(tflite::InterpreterBuilder** builder) {
   delete *builder;
   *builder = 0;
 }
-int tfeInterpreterBuilderBuild(tflite::InterpreterBuilder* builder,
-                               tflite::Interpreter* interpreter) {
+int tfeInterpreterBuilderBuild(
+    tflite::InterpreterBuilder* builder,
+    tflite::Interpreter* interpreter) {
   std::unique_ptr<tflite::Interpreter> ptr(interpreter);
   int status = (*builder)(&ptr);
   ptr.release();
@@ -162,8 +171,9 @@ int tfeTensorGetType(TfLiteTensor* tensor) { return tensor->type; }
 
 char* tfeTensorGetData(TfLiteTensor* tensor) { return tensor->data.raw; }
 
-void tfeTensorGetQuantizationParams(TfLiteTensor* tensor,
-                                    TfLiteQuantizationParams* params) {
+void tfeTensorGetQuantizationParams(
+    TfLiteTensor* tensor,
+    TfLiteQuantizationParams* params) {
   memcpy(params, &(tensor->params), sizeof(TfLiteQuantizationParams));
 }
 
@@ -184,13 +194,16 @@ void tfeDynamicBufferRelease(tflite::DynamicBuffer** buffer) {
   delete *buffer;
   *buffer = 0;
 }
-void tfeDynamicBufferAddString(tflite::DynamicBuffer* buffer, char* str,
-                               int len) {
+void tfeDynamicBufferAddString(
+    tflite::DynamicBuffer* buffer, 
+    char* str,
+    int len) {
   buffer->AddString(str, len);
 }
-void tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer,
-                                   TfLiteTensor* tensor,
-                                   TfLiteIntArray* newShape) {
+void tfeDynamicBufferWriteToTensor(
+    tflite::DynamicBuffer* buffer,
+    TfLiteTensor* tensor,
+    TfLiteIntArray* newShape) {
   buffer->WriteToTensor(tensor, newShape);
 }
 
@@ -236,17 +249,17 @@ void tfeGpuDelegateV2Delete(TfLiteDelegate** delegate) {
 
 // TfLiteDelegate* tfeGpuDelegateCreate()
 //{
-//#ifdef __IOS__
+// #ifdef __IOS__
 //    return TFLGpuDelegateCreate(nullptr);
-//#else
+// #else
 //    return 0;
-//#endif
+// #endif
 //}
 // void tfeGpuDelegateDelete(TfLiteDelegate** delegate)
 //{
-//#ifdef __IOS__
+// #ifdef __IOS__
 //    TFLGpuDelegateDelete(*delegate);
-//#endif
+// #endif
 //    *delegate = 0;
 //}
 
@@ -262,7 +275,7 @@ TfLiteDelegate* tfeXNNPackDelegateCreate(int numThreads) {
 #ifdef TENSORFLOW_LITE_DELEGATES_XNNPACK_XNNPACK_DELEGATE_H_
   TfLiteXNNPackDelegateOptions opt;
   opt.num_threads = numThreads;
-  //opt.enable_int8_weights_unpacking = enableInt8WeightsUnpacking;
+  // opt.enable_int8_weights_unpacking = enableInt8WeightsUnpacking;
   return TfLiteXNNPackDelegateCreate(&opt);
 #else
   return 0;
@@ -315,62 +328,3 @@ tflite::ErrorReporter* tflite::CallbackErrorReporter() {
       new tflite::TfliteErrReporter;
   return error_reporter;
 }
-
-/*
-
-void tfePixel32ToPixelFloat(
-        unsigned char* pixels,
-        int width,
-        int height,
-        float inputMean,
-        float scale,
-        bool flipUpsideDown,
-        bool swapBR,
-        float* floatValues)
-{
-        tfePixelsToTensor<float>(pixels, 4, width, height, inputMean, scale,
-flipUpsideDown, swapBR, floatValues);
-}
-
-void tfePixel32ToPixelByte(
-        unsigned char* pixels,
-        int width,
-        int height,
-        float inputMean,
-        float scale,
-        bool flipUpsideDown,
-        bool swapBR,
-        unsigned char* result)
-{
-        tfePixelsToTensor<unsigned char>(pixels, 4, width, height, inputMean,
-scale, flipUpsideDown, swapBR, result);
-}
-
-void tfePixel24ToPixelFloat(
-        unsigned char* pixels,
-        int width,
-        int height,
-        float inputMean,
-        float scale,
-        bool flipUpsideDown,
-        bool swapBR,
-        float* floatValues)
-{
-        tfePixelsToTensor<float>(pixels, 3, width, height, inputMean, scale,
-flipUpsideDown, swapBR, floatValues);
-}
-
-void tfePixel24ToPixelByte(
-        unsigned char* pixels,
-        int width,
-        int height,
-        float inputMean,
-        float scale,
-        bool flipUpsideDown,
-        bool swapBR,
-        unsigned char* result)
-{
-        tfePixelsToTensor<unsigned char>(pixels, 3, width, height, inputMean,
-scale, flipUpsideDown, swapBR, result);
-}
-*/
