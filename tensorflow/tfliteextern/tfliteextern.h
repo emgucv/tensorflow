@@ -32,8 +32,8 @@
 #define TFAPI(rettype) TF_EXTERN_C TF_EXPORTS rettype TF_CDECL
 #endif
 
-//#include <stddef.h>
-//#include <stdint.h>
+// #include <stddef.h>
+// #include <stdint.h>
 #include <cstdlib>
 #include <cstring>
 
@@ -51,77 +51,78 @@
 #include "tensorflow/lite/delegates/gpu/delegate.h"
 #endif
 
-//#ifdef __IOS__
-//#include "tensorflow/lite/delegates/gpu/metal_delegate.h"
-//#endif
+// #ifdef __IOS__
+// #include "tensorflow/lite/delegates/gpu/metal_delegate.h"
+// #endif
 
-//#include "tensorflow/lite/tools/mutable_op_resolver.h"
+// #include "tensorflow/lite/tools/mutable_op_resolver.h"
 
 TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromFile(char* filename);
-TFAPI(tflite::FlatBufferModel*)
-tfeFlatBufferModelBuildFromBuffer(char* buffer, int bufferSize);
-// TFAPI(tflite::FlatBufferModel*)
-// tfeFlatBufferModelBuildFromModel(tflite::FlatBufferModel* other);
+TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromBuffer(
+    char* buffer, 
+    int bufferSize);
+// TFAPI(tflite::FlatBufferModel*) tfeFlatBufferModelBuildFromModel(tflite::FlatBufferModel* other);
+
 TFAPI(bool) tfeFlatBufferModelInitialized(tflite::FlatBufferModel* model);
-TFAPI(bool)
-tfeFlatBufferModelCheckModelIdentifier(tflite::FlatBufferModel* model);
+TFAPI(bool) tfeFlatBufferModelCheckModelIdentifier(tflite::FlatBufferModel* model);
 TFAPI(void) tfeFlatBufferModelRelease(tflite::FlatBufferModel** model);
 
-TFAPI(tflite::ops::builtin::BuiltinOpResolver*)
-tfeBuiltinOpResolverCreate(tflite::OpResolver** opResolver);
-TFAPI(void)
-tfeBuiltinOpResolverRelease(tflite::ops::builtin::BuiltinOpResolver** resolver);
+TFAPI(tflite::ops::builtin::BuiltinOpResolver*) tfeBuiltinOpResolverCreate(tflite::OpResolver** opResolver);
+TFAPI(void) tfeBuiltinOpResolverRelease(tflite::ops::builtin::BuiltinOpResolver** resolver);
 
 TFAPI(tflite::Interpreter*) tfeInterpreterCreate();
-TFAPI(void)
-tfeInterpreterCreateFromModel(tflite::Interpreter** interpreter,
-                              tflite::FlatBufferModel* model,
-                              tflite::OpResolver* opResolver);
+TFAPI(void) tfeInterpreterCreateFromModel(
+    tflite::Interpreter** interpreter,
+    tflite::FlatBufferModel* model,
+    tflite::OpResolver* opResolver);
 TFAPI(int) tfeInterpreterAllocateTensors(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterInvoke(tflite::Interpreter* interpreter);
-// TFAPI(char*) tfeInterpreterInputTensor(tflite::Interpreter* interpreter, int
-// index); TFAPI(char*) tfeInterpreterOuputTensor(tflite::Interpreter*
-// interpreter, int index);
-TFAPI(TfLiteTensor*)
-tfeInterpreterGetTensor(tflite::Interpreter* interpreter, int index);
+// TFAPI(char*) tfeInterpreterInputTensor(tflite::Interpreter* interpreter, int index);
+// TFAPI(char*) tfeInterpreterOuputTensor(tflite::Interpreter* interpreter, int index);
+TFAPI(TfLiteTensor*) tfeInterpreterGetTensor(tflite::Interpreter* interpreter, int index);
 TFAPI(int) tfeInterpreterTensorSize(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterNodesSize(tflite::Interpreter* interpreter);
 TFAPI(int) tfeInterpreterGetInputSize(tflite::Interpreter* interpreter);
-TFAPI(void)
-tfeInterpreterGetInput(tflite::Interpreter* interpreter, int* input);
-TFAPI(const char*)
-tfeInterpreterGetInputName(tflite::Interpreter* interpreter, int index);
-TFAPI(int)
-tfeInterpreterResizeInputTensor(tflite::Interpreter* interpreter,
-                                int input_index, int* input_dims,
-                                int input_dims_size);
+TFAPI(void) tfeInterpreterGetInput(
+    tflite::Interpreter* interpreter, 
+    int* input);
+TFAPI(const char*) tfeInterpreterGetInputName(
+    tflite::Interpreter* interpreter, 
+    int index);
+TFAPI(int) tfeInterpreterResizeInputTensor(
+    tflite::Interpreter* interpreter,
+    int input_index, 
+    int* input_dims,
+    int input_dims_size);
 TFAPI(int) tfeInterpreterGetOutputSize(tflite::Interpreter* interpreter);
-TFAPI(int)
-tfeInterpreterGetOutput(tflite::Interpreter* interpreter, int* output);
-TFAPI(const char*)
-tfeInterpreterGetOutputName(tflite::Interpreter* interpreter, int index);
-// TFAPI(void) tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool
-// enable);
-TFAPI(void)
-tfeInterpreterSetNumThreads(tflite::Interpreter* interpreter, int numThreads);
+TFAPI(int) tfeInterpreterGetOutput(
+    tflite::Interpreter* interpreter, 
+    int* output);
+TFAPI(const char*) tfeInterpreterGetOutputName(
+    tflite::Interpreter* interpreter, 
+    int index);
+// TFAPI(void) tfeInterpreterUseNNAPI(tflite::Interpreter* interpreter, bool enable);
+TFAPI(void) tfeInterpreterSetNumThreads(
+    tflite::Interpreter* interpreter, 
+    int numThreads);
 TFAPI(void) tfeInterpreterRelease(tflite::Interpreter** interpreter);
-TFAPI(int)
-tfeInterpreterModifyGraphWithDelegate(tflite::Interpreter* interpreter,
-                                      TfLiteDelegate* delegate);
+TFAPI(int) tfeInterpreterModifyGraphWithDelegate(
+    tflite::Interpreter* interpreter,
+    TfLiteDelegate* delegate);
 
-TFAPI(tflite::InterpreterBuilder*)
-tfeInterpreterBuilderCreate(tflite::FlatBufferModel* model,
-                            tflite::OpResolver* opResolver);
+TFAPI(tflite::InterpreterBuilder*) tfeInterpreterBuilderCreate(
+    tflite::FlatBufferModel* model,
+    tflite::OpResolver* opResolver);
 TFAPI(void) tfeInterpreterBuilderRelease(tflite::InterpreterBuilder** builder);
-TFAPI(int)
-tfeInterpreterBuilderBuild(tflite::InterpreterBuilder* builder,
-                           tflite::Interpreter* interpreter);
+TFAPI(int) tfeInterpreterBuilderBuild(
+    tflite::InterpreterBuilder* builder,
+    tflite::Interpreter* interpreter);
 
 TFAPI(int) tfeTensorGetType(TfLiteTensor* tensor);
 TFAPI(char*) tfeTensorGetData(TfLiteTensor* tensor);
-TFAPI(void)
-tfeTensorGetQuantizationParams(TfLiteTensor* tensor,
-                               TfLiteQuantizationParams* params);
+TFAPI(void) tfeTensorGetQuantizationParams(
+    TfLiteTensor* tensor,
+    TfLiteQuantizationParams* params);
 TFAPI(int) tfeTensorGetAllocationType(TfLiteTensor* tensor);
 TFAPI(int) tfeTensorGetByteSize(TfLiteTensor* tensor);
 TFAPI(const char*) tfeTensorGetName(TfLiteTensor* tensor);
@@ -131,21 +132,22 @@ TFAPI(void) tfeMemcpy(void* dst, void* src, int length);
 
 TFAPI(tflite::DynamicBuffer*) tfeDynamicBufferCreate();
 TFAPI(void) tfeDynamicBufferRelease(tflite::DynamicBuffer** buffer);
-TFAPI(void)
-tfeDynamicBufferAddString(tflite::DynamicBuffer* buffer, char* str, int len);
-TFAPI(void)
-tfeDynamicBufferWriteToTensor(tflite::DynamicBuffer* buffer,
-                              TfLiteTensor* tensor, TfLiteIntArray* newShape);
+TFAPI(void) tfeDynamicBufferAddString(
+    tflite::DynamicBuffer* buffer, 
+    char* str, 
+    int len);
+TFAPI(void) tfeDynamicBufferWriteToTensor(
+    tflite::DynamicBuffer* buffer,
+    TfLiteTensor* tensor, 
+    TfLiteIntArray* newShape);
 
 TFAPI(TfLiteIntArray*) tfeIntArrayCreate(int size);
 TFAPI(int) tfeIntArrayGetSize(TfLiteIntArray* v);
 TFAPI(int*) tfeIntArrayGetData(TfLiteIntArray* v);
 TFAPI(void) tfeIntArrayRelease(TfLiteIntArray** v);
 
-TFAPI(tflite::StatefulNnApiDelegate*)
-tfeStatefulNnApiDelegateCreate(TfLiteDelegate** tfLiteDelegate);
-TFAPI(void)
-tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate);
+TFAPI(tflite::StatefulNnApiDelegate*) tfeStatefulNnApiDelegateCreate(TfLiteDelegate** tfLiteDelegate);
+TFAPI(void) tfeStatefulNnApiDelegateRelease(tflite::StatefulNnApiDelegate** delegate);
 
 TFAPI(TfLiteDelegate*) tfeGpuDelegateV2Create();
 TFAPI(void) tfeGpuDelegateV2Delete(TfLiteDelegate** delegate);
@@ -164,30 +166,15 @@ TFAPI(void) tfeTfLiteDelegateRelease(TfLiteDelegate** delegate);
 TFAPI(const char*) tfeGetLiteVersion();
 
 namespace tflite {
-extern "C" typedef int (*ErrorCallback)(int status, const char* errMsg);
 
-// An error reporter that simplify writes the message to stderr.
-struct TfliteErrReporter : public ErrorReporter {
-  int Report(const char* format, va_list args) override;
-};
+  extern "C" typedef int (*ErrorCallback)(int status, const char* errMsg);
 
-ErrorReporter* CallbackErrorReporter();
+  // An error reporter that simplify writes the message to stderr.
+  struct TfliteErrReporter : public ErrorReporter {
+    int Report(const char* format, va_list args) override;
+  };
+
+  ErrorReporter* CallbackErrorReporter();
 }  // namespace tflite
 
 TFAPI(void) tfeRedirectError(tflite::ErrorCallback errCallback);
-
-/*
-TFAPI(void) tfePixel32ToPixelFloat(unsigned char* pixels, int width, int height,
-float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
-
-TFAPI(void) tfePixel32ToPixelByte(unsigned char* pixels, int width, int height,
-float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char*
-result);
-
-TFAPI(void) tfePixel24ToPixelFloat(unsigned char* pixels, int width, int height,
-float inputMean, float scale, bool flipUpsideDown, bool swapBR, float* result);
-
-TFAPI(void) tfePixel24ToPixelByte(unsigned char* pixels, int width, int height,
-float inputMean, float scale, bool flipUpsideDown, bool swapBR, unsigned char*
-result);
-*/
