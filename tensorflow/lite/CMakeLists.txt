@@ -211,6 +211,8 @@ if(TFLITE_ENABLE_XNNPACK)
   endif()
   list(APPEND TFLITE_TARGET_DEPENDENCIES pthreadpool)
 
+endif()
+
   IF(NOT DEFINED FP16_SOURCE_DIR)
     MESSAGE(STATUS "Downloading FP16 to ${CMAKE_BINARY_DIR}/FP16-source (define FP16_SOURCE_DIR to avoid it)")
     CONFIGURE_FILE(cmake/DownloadFP16.cmake "${CMAKE_BINARY_DIR}/FP16-download/CMakeLists.txt")
@@ -220,7 +222,7 @@ if(TFLITE_ENABLE_XNNPACK)
       WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/FP16-download")
     SET(FP16_SOURCE_DIR "${CMAKE_BINARY_DIR}/FP16-source" CACHE STRING "FP16 source directory")
   ENDIF()
-endif()
+
 set(TF_TARGET_PRIVATE_OPTIONS "")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
   # TensorFlow uses a heap of deprecated proto fields so surpress these
@@ -728,6 +730,14 @@ list(FILTER _ALL_TFLITE_HDRS INCLUDE REGEX ".*\\.h$")
 target_include_directories(tensorflow-lite
   PUBLIC $<BUILD_INTERFACE:${TENSORFLOW_SOURCE_DIR}> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
+MESSAGE(STATUS "------------------------- FP16_SOURCE_DIR: ${FP16_SOURCE_DIR}  -------------------------") 
+IF (DEFINED FP16_SOURCE_DIR)
+  MESSAGE(STATUS "------------------------- Added include directory: ${FP16_SOURCE_DIR} for tensorflow-lite -------------------------") 
+  target_include_directories(tensorflow-lite PUBLIC ${FP16_SOURCE_DIR}/include)
+ENDIF()
+
+
 ADD_DEFINITIONS(-DTF_MAJOR_VERSION=${TENSORFLOW_VERSION_MAJOR})
 ADD_DEFINITIONS(-DTF_MINOR_VERSION=${TENSORFLOW_VERSION_MINOR})
 ADD_DEFINITIONS(-DTF_PATCH_VERSION=${TENSORFLOW_VERSION_PATCH})
