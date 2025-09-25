@@ -732,23 +732,24 @@ def _tf_repositories():
     # Apple and Swift rules.
     # https://github.com/bazelbuild/rules_apple/releases
     tf_http_archive(
-        name = "build_bazel_rules_apple",
-        sha256 = "b4df908ec14868369021182ab191dbd1f40830c9b300650d5dc389e0b9266c8d",
-        urls = tf_mirror_urls("https://github.com/bazelbuild/rules_apple/releases/download/3.5.1/rules_apple.3.5.1.tar.gz"),
+	name = "build_bazel_rules_apple",
+    	sha256 = "ef8a5744b2ffff49f47647226f69f0f06522ca2e8a6fa1aaf5d65d5314813c34",
+    	urls = tf_mirror_urls("https://github.com/bazelbuild/rules_apple/releases/download/4.2.0/rules_apple.4.2.0.tar.gz"),
     )
+
 
     # https://github.com/bazelbuild/rules_swift/releases
     tf_http_archive(
-        name = "build_bazel_rules_swift",
-        sha256 = "bb01097c7c7a1407f8ad49a1a0b1960655cf823c26ad2782d0b7d15b323838e2",
-        urls = tf_mirror_urls("https://github.com/bazelbuild/rules_swift/releases/download/1.18.0/rules_swift.1.18.0.tar.gz"),
+	name = "build_bazel_rules_swift",
+    	sha256 = "5eff717c18bb513285b499add68f2331509cd4e411ff085e96a86b3342c1e5aa",
+    	urls = tf_mirror_urls("https://github.com/bazelbuild/rules_swift/releases/download/3.1.2/rules_swift.3.1.2.tar.gz"),
     )
 
     # https://github.com/bazelbuild/apple_support/releases
     tf_http_archive(
-        name = "build_bazel_apple_support",
-        sha256 = "d71b02d6df0500f43279e22400db6680024c1c439115c57a9a82e9effe199d7b",
-        urls = tf_mirror_urls("https://github.com/bazelbuild/apple_support/releases/download/1.18.1/apple_support.1.18.1.tar.gz"),
+	name = "build_bazel_apple_support",
+    	sha256 = "ee20cc5c0bab47065473c8033d462374dd38d172406ecc8de5c8f08487943f2f",
+    	urls = tf_mirror_urls("https://github.com/bazelbuild/apple_support/releases/download/1.23.1/apple_support.1.23.1.tar.gz"),
     )
 
     # https://github.com/apple/swift-protobuf/releases
