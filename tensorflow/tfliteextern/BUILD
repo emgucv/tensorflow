@@ -58,15 +58,28 @@ cc_library(
 				"tfliteextern_with_xnn": [],
 				"//conditions:default": ["-DWITHOUT_XNNPACK"],
 		}),
+   linkopts = select({
+        "//tensorflow:macos": [
+            "-Wl,-exported_symbols_list,$(location //tensorflow/tfliteextern:tfliteextern_exported_symbols.lds)",
+        ],
+        "//tensorflow:ios": [
+            "-Wl,-exported_symbols_list,$(location //tensorflow/tfliteextern:tfliteextern_exported_symbols.lds)",
+        ],
+        "//tensorflow:windows": [],
+        "//conditions:default": [
+            "-Wl,--version-script,$(location //tensorflow/lite:tflite_version_script.lds)",
+        ],
+    }),
     deps = [
-    "//tensorflow/lite/c:c_api",
-    "//tensorflow/lite/c:common",
-    #"//tensorflow/lite/delegates/gpu:metal_delegate",
-    "//tensorflow/lite/kernels:builtin_ops",
+        "//tensorflow/lite/c:c_api",
+        "//tensorflow/lite/c:common",
+        #"//tensorflow/lite/delegates/gpu:metal_delegate",
+        "//tensorflow/lite/kernels:builtin_ops",
+        ":tfliteextern_exported_symbols.lds",
 	"//tensorflow/imgproc:imgproc",
 	] + select({
-	"tfliteextern_with_xnn": ["//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",],
-	"//conditions:default": [],
+	  "tfliteextern_with_xnn": ["//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",],
+	  "//conditions:default": [],
 	})
 	
 )
