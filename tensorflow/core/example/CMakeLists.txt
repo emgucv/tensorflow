@@ -22,10 +22,12 @@ set(GEN_PROTO_DIR ${CMAKE_CURRENT_BINARY_DIR}/tensorflow/core/example)
 # Generate feature proto .h, .cc and lib.
 list(APPEND feature_generated_files ${GEN_PROTO_DIR}/feature.pb.h ${GEN_PROTO_DIR}/feature.pb.cc)
 
+get_filename_component(TENSORFLOW_SOURCE_ABS_DIR "${TENSORFLOW_SOURCE_DIR}" ABSOLUTE)
+
 add_custom_command(
   OUTPUT ${feature_generated_files}
   COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-  ARGS --cpp_out=${CMAKE_CURRENT_BINARY_DIR} --proto_path=${TENSORFLOW_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/feature.proto
+  ARGS --cpp_out=${CMAKE_CURRENT_BINARY_DIR} --proto_path=${TENSORFLOW_SOURCE_ABS_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/feature.proto
   DEPENDS ${Protobuf_PROTOC_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/feature.proto
 )
 
@@ -40,7 +42,7 @@ list(APPEND example_generated_files ${GEN_PROTO_DIR}/example.pb.h ${GEN_PROTO_DI
 add_custom_command(
   OUTPUT ${example_generated_files}
   COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-  ARGS --cpp_out=${CMAKE_CURRENT_BINARY_DIR} --proto_path=${TENSORFLOW_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/example.proto
+  ARGS --cpp_out=${CMAKE_CURRENT_BINARY_DIR} --proto_path=${TENSORFLOW_SOURCE_ABS_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/example.proto
   DEPENDS ${Protobuf_PROTOC_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/example.proto ${feature_generated_files}
 )
 

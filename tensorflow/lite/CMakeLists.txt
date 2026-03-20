@@ -38,6 +38,11 @@ cmake_policy(SET CMP0028 NEW)
 # Enable MACOSX_RPATH (@rpath) for built dynamic libraries.
 cmake_policy(SET CMP0042 NEW)
 project(tensorflow-lite C CXX)
+
+IF (MSVC)
+  add_definitions(-D_USE_MATH_DEFINES)
+ENDIF()
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Use FetchContent to download TensorFlow if not provided
@@ -220,17 +225,18 @@ if(TFLITE_ENABLE_XNNPACK)
       "${CMAKE_BINARY_DIR}/pthreadpool")
   endif()
   list(APPEND TFLITE_TARGET_DEPENDENCIES pthreadpool)
-
-  IF(NOT DEFINED FP16_SOURCE_DIR)
-    MESSAGE(STATUS "Downloading FP16 to ${CMAKE_BINARY_DIR}/FP16-source (define FP16_SOURCE_DIR to avoid it)")
-    CONFIGURE_FILE(cmake/DownloadFP16.cmake "${CMAKE_BINARY_DIR}/FP16-download/CMakeLists.txt")
-    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-      WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/FP16-download")
-    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
-      WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/FP16-download")
-    SET(FP16_SOURCE_DIR "${CMAKE_BINARY_DIR}/FP16-source" CACHE STRING "FP16 source directory")
-  ENDIF()
 endif()
+
+IF(NOT DEFINED FP16_SOURCE_DIR)
+  MESSAGE(STATUS "Downloading FP16 to ${CMAKE_BINARY_DIR}/FP16-source (define FP16_SOURCE_DIR to avoid it)")
+  CONFIGURE_FILE(cmake/DownloadFP16.cmake "${CMAKE_BINARY_DIR}/FP16-download/CMakeLists.txt")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/FP16-download")
+  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/FP16-download")
+  SET(FP16_SOURCE_DIR "${CMAKE_BINARY_DIR}/FP16-source" CACHE STRING "FP16 source directory")
+ENDIF()
+
 set(TF_TARGET_PRIVATE_OPTIONS "")
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
   # TensorFlow uses a heap of deprecated proto fields so surpress these
@@ -255,6 +261,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   # lite/kernels/conv.cc has more than 64k sections so enable /bigobj to
   # support compilation with MSVC2015.
   if(MSVC)
+    add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
     list(APPEND TFLITE_TARGET_PRIVATE_OPTIONS "/bigobj")
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
       message("Disabling MSVC /O2 optimization for Win32")
@@ -755,6 +762,18 @@ target_include_directories(tensorflow-lite
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
 )
+
+MESSAGE(STATUS "------------------------- FP16_SOURCE_DIR: ${FP16_SOURCE_DIR}  -------------------------") 
+IF (DEFINED FP16_SOURCE_DIR)
+  MESSAGE(STATUS "------------------------- Added include directory: ${FP16_SOURCE_DIR} for tensorflow-lite -------------------------") 
+  target_include_directories(tensorflow-lite PUBLIC ${FP16_SOURCE_DIR}/include)
+ENDIF()
+
+
+ADD_DEFINITIONS(-DTF_MAJOR_VERSION=${TENSORFLOW_VERSION_MAJOR})
+ADD_DEFINITIONS(-DTF_MINOR_VERSION=${TENSORFLOW_VERSION_MINOR})
+ADD_DEFINITIONS(-DTF_PATCH_VERSION=${TENSORFLOW_VERSION_PATCH})
+ADD_DEFINITIONS(-DTF_VERSION_SUFFIX=${TENSORFLOW_VERSION_SUFFIX})
 target_link_libraries(tensorflow-lite
   PUBLIC
     Eigen3::Eigen

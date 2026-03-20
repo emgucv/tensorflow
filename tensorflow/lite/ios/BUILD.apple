@@ -270,6 +270,7 @@ cc_library(
         "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate.h",
         "//tensorflow/lite/profiling/telemetry/c:profiler.h",
         "//tensorflow/lite/profiling/telemetry/c:telemetry_setting.h",
+	"//tensorflow/tfliteextern:tfliteextern.h",
     ],
     tags = [
         "nobuilder",
@@ -286,6 +287,7 @@ cc_library(
         "//tensorflow/lite/delegates/xnnpack:xnnpack_delegate",
         "//tensorflow/lite/profiling/telemetry/c:profiler",
         "//tensorflow/lite/profiling/telemetry/c:telemetry_setting",
+	"//tensorflow/tfliteextern:tfliteextern.ios.a",
     ],
 )
 
