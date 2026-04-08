@@ -41,7 +41,7 @@ set(CPUINFO_BUILD_BENCHMARKS OFF CACHE BOOL "Disable cpuinfo micro-benchmarks")
 SET(CMAKE_SYSTEM_PROCESSOR_OLD "")
 IF("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "aarch64")
   MESSAGE(STATUS ">>>>>>>>>>>>>>>>> CMAKE_SYSYTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR} >>>>>>>>>>>> ")
-  IF(IS_ARM64)
+  IF(IS_ARM64 OR CMAKE_SIZEOF_VOID_P EQUAL 8)
     #DO nothing
     MESSAGE(STATUS ">>>>>>>>>>>>>>>>> Building for aarch64 ... >>>>>>>>>>>> ")
   ELSE()
